@@ -10,6 +10,15 @@
  * Sources:
  * - ETCswap V2: https://v2.etcswap.org
  * - ETCswap V3: https://v3.etcswap.org
+ *
+ * NPM Packages:
+ * - @_etcswap/smart-order-router: Smart order routing for optimal swap paths
+ * - @_etcswap/v2-sdk: ETCswap V2 SDK for AMM operations
+ * - @_etcswap/v3-core: ETCswap V3 core contracts and types
+ * - @_etcswap/sdk-core: Core SDK utilities shared across V2/V3
+ *
+ * Installation:
+ *   pnpm add @_etcswap/smart-order-router @_etcswap/v2-sdk @_etcswap/v3-core @_etcswap/sdk-core
  */
 
 export interface ETCswapContractAddresses {

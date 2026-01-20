@@ -104,7 +104,17 @@ We are implementing ETCswap V2 (AMM) and V3 (CLMM) connectors for:
 
 ### ETCswap V3 Contracts (Mordor)
 
-> **Note**: V3 contract addresses for Mordor testnet need to be provided. If V3 is not yet deployed on Mordor, this section should be updated when available.
+V3 contracts on Mordor testnet use the same addresses as mainnet (classic).
+
+| Contract | Address |
+|----------|---------|
+| Factory | `0x2624E907BcC04f93C8f29d7C7149a8700Ceb8cDC` |
+| Universal Router | `0x9b676E761040D60C6939dcf5f582c2A4B51025F1` |
+| Swap Router02 | `0xEd88EDD995b00956097bF90d39C9341BBde324d1` |
+| Quoter V2 | `0x4d8c163400CB87Cbe1bae76dBf36A09FED85d39B` |
+| Nonfungible Token Position Manager | `0x3CEDe6562D6626A04d7502CC35720901999AB699` |
+| Permit2 | `0x000000000022D473030F116dDEE9F6B43aC78BA3` |
+| Tick Lens | `0x23B7Bab45c84fA8f68f813D844E8afD44eE8C315` |
 
 ---
 
@@ -140,6 +150,25 @@ We are implementing ETCswap V2 (AMM) and V3 (CLMM) connectors for:
 | Website | https://etcswap.org |
 | Twitter | https://x.com/ETCswap_org |
 | Brand Assets | https://github.com/etcswap/brand |
+
+---
+
+## NPM Packages
+
+ETCswap provides official npm packages for SDK integration:
+
+| Package | Description |
+|---------|-------------|
+| `@_etcswap/smart-order-router` | Smart order routing for optimal swap paths across V2 and V3 |
+| `@_etcswap/v2-sdk` | ETCswap V2 SDK for AMM operations |
+| `@_etcswap/v3-core` | ETCswap V3 core contracts and types |
+| `@_etcswap/sdk-core` | Core SDK utilities shared across V2/V3 |
+
+### Installation
+
+```bash
+pnpm add @_etcswap/smart-order-router @_etcswap/v2-sdk @_etcswap/v3-core @_etcswap/sdk-core
+```
 
 ---
 
@@ -183,7 +212,7 @@ ETCswap contracts are forks of Uniswap and should be ABI-compatible:
 | Network | Config Name | Chain ID | V2 | V3 |
 |---------|-------------|----------|----|----|
 | Ethereum Classic | `classic` | 61 | Yes | Yes |
-| Mordor Testnet | `mordor` | 63 | Yes | TBD |
+| Mordor Testnet | `mordor` | 63 | Yes | Yes |
 
 ---
 
@@ -226,6 +255,18 @@ const ETCSWAP_V2_MORDOR = {
   factory: '0x212eE1B5c8C26ff5B2c4c14CD1C54486Fe23ce70',
   router: '0x582A87594c86b204920f9e337537b5Aa1fefC07C',
   multicall: '0x41Fa0143ea4b4d91B41BF23d0A03ed3172725C4B',
+};
+
+// ETCswap V3 Mordor (same addresses as classic mainnet)
+const ETCSWAP_V3_MORDOR = {
+  factory: '0x2624E907BcC04f93C8f29d7C7149a8700Ceb8cDC',
+  universalRouter: '0x9b676E761040D60C6939dcf5f582c2A4B51025F1',
+  swapRouter02: '0xEd88EDD995b00956097bF90d39C9341BBde324d1',
+  quoterV2: '0x4d8c163400CB87Cbe1bae76dBf36A09FED85d39B',
+  nftPositionManager: '0x3CEDe6562D6626A04d7502CC35720901999AB699',
+  permit2: '0x000000000022D473030F116dDEE9F6B43aC78BA3',
+  tickLens: '0x23B7Bab45c84fA8f68f813D844E8afD44eE8C315',
+  initCodeHash: '0x7ea2da342810af3c5a9b47258f990aaac829fe1385a1398feb77d0126a85dbef',
 };
 
 // Core Tokens Mordor

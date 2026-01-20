@@ -6,7 +6,12 @@ Instructions for AI coding assistants working on Hummingbot Gateway (hummingbot-
 
 Hummingbot Gateway is a **TypeScript-based API middleware** that provides standardized endpoints for blockchain and DEX interactions. It serves as the bridge between the Hummingbot trading bot (Python) and decentralized exchanges.
 
-**Current Focus:** Adding ETCswap V2 and V3 connectors for Ethereum Classic (`classic` mainnet and `mordor` testnet).
+**Current Focus:** ETCswap connector development for Ethereum Classic (`classic` mainnet and `mordor` testnet).
+
+**Implementation Status:**
+- ✅ ETCswap V2 (AMM) - Complete with swap and liquidity operations
+- ✅ ETCswap V3 (CLMM) - Complete with swap operations (pool-info, quote-swap, execute-swap)
+- ⏳ ETCswap Router (Universal Router) - Future enhancement for optimized cross-V2/V3 routing
 
 **Key Reference:** See [docs/ETCSWAP-CONTRACTS.md](../docs/ETCSWAP-CONTRACTS.md) for all ETCswap contract addresses.
 
@@ -175,6 +180,16 @@ src/connectors/{name}/
 2. **Chain IDs**: 61 (classic), 63 (mordor)
 3. **Wrapped Token**: WETC at `0x1953cab0E5bFa6D4a9BaD6E05fD46C1CC6527a5a`
 4. **Currency Symbol**: ETC (classic), METC (mordor)
+
+### ETCswap NPM Packages
+
+Official ETCswap SDK packages:
+- `@_etcswap/smart-order-router` - Smart order routing
+- `@_etcswap/v2-sdk` - V2 AMM SDK
+- `@_etcswap/v3-core` - V3 core contracts
+- `@_etcswap/sdk-core` - Shared SDK utilities
+
+Installation: `pnpm add @_etcswap/smart-order-router @_etcswap/v2-sdk @_etcswap/v3-core @_etcswap/sdk-core`
 
 ## Protected Files
 
