@@ -16,10 +16,12 @@ Before starting, ensure you have:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/hummingbot/hummingbot-gateway.git
+git clone https://github.com/etcswap/hummingbot-gateway.git
 cd hummingbot-gateway
 git checkout etcswap
 ```
+
+> **Note:** This uses the ETCswap fork. Once merged upstream, use `https://github.com/hummingbot/hummingbot-gateway.git`.
 
 ### 2. Install Dependencies
 

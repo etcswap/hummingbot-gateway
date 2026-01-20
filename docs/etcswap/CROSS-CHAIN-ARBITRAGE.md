@@ -62,14 +62,16 @@ This 1:1 relationship means that price differences between ETC/USDC (Coinbase) a
 ### Step 1: Install Hummingbot and Gateway
 
 ```bash
-# Clone repositories
-git clone https://github.com/hummingbot/hummingbot.git
-git clone https://github.com/hummingbot/hummingbot-gateway.git
+# Clone repositories (using ETCswap forks until merged upstream)
+git clone https://github.com/etcswap/hummingbot.git
+git clone https://github.com/etcswap/hummingbot-gateway.git
 
 # Checkout ETCswap branches
 cd hummingbot && git checkout etcswap && cd ..
 cd hummingbot-gateway && git checkout etcswap && cd ..
 ```
+
+> **Note:** Once merged upstream, use `https://github.com/hummingbot/` instead of `https://github.com/etcswap/`.
 
 ### Step 2: Configure Gateway
 
