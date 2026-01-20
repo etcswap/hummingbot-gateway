@@ -277,3 +277,33 @@ node scripts/test-helius-live.js
 ## Hummingbot Gateway Endpoint Standardization
 - This repo standardized DEX and chain endpoints that are used by Hummingbot strategies. See this branch for the matching code, especially the Gateway connector classes https://github.com/hummingbot/hummingbot/tree/development
 
+## ETCswap Integration (Current Focus)
+
+This fork is focused on adding ETCswap V2 and V3 connectors for Ethereum Classic.
+
+### Contract Reference
+See [docs/ETCSWAP-CONTRACTS.md](docs/ETCSWAP-CONTRACTS.md) for all contract addresses.
+
+### Networks to Implement
+| Network | Config Name | Chain ID | V2 (AMM) | V3 (CLMM) |
+|---------|-------------|----------|----------|-----------|
+| Ethereum Classic | `classic` | 61 | Yes | Yes |
+| Mordor Testnet | `mordor` | 63 | Yes | TBD |
+
+### Key Differences from Uniswap
+1. **Native Asset**: ETC instead of ETH
+2. **Wrapped Token**: WETC at `0x1953cab0E5bFa6D4a9BaD6E05fD46C1CC6527a5a`
+3. **RPC**: `https://etc.rivet.link` (classic), `https://rpc.mordor.etccooperative.org` (mordor)
+
+### Implementation Steps
+1. Add ETC network configs: `src/templates/chains/ethereum/classic.yml` and `mordor.yml`
+2. Add token lists: `src/templates/tokens/ethereum/classic.json` and `mordor.json`
+3. Create ETCswap connector in `src/connectors/etcswap/`
+4. Register routes in `src/app.ts`
+5. Add to `src/config/routes/getConnectors.ts`
+
+### ETCswap Links
+- V2 App: https://v2.etcswap.org
+- V3 App: https://v3.etcswap.org
+- V2 Subgraph: https://v2-graph.etcswap.org/subgraphs/name/etcswap/graphql
+- V3 Subgraph: https://v3-graph.etcswap.org/subgraphs/name/etcswap/graphql
