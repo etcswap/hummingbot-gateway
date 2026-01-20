@@ -71,7 +71,7 @@ cd hummingbot && git checkout etcswap && cd ..
 cd hummingbot-gateway && git checkout etcswap && cd ..
 ```
 
-> **Note:** Once merged upstream, use `https://github.com/hummingbot/` instead of `https://github.com/etcswap/`.
+> **Note:** Once merged upstream, use `https://github.com/hummingbot/hummingbot.git` and `https://github.com/hummingbot/gateway.git`.
 
 ### Step 2: Configure Gateway
 

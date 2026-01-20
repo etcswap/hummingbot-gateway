@@ -21,7 +21,7 @@ cd hummingbot-gateway
 git checkout etcswap
 ```
 
-> **Note:** This uses the ETCswap fork. Once merged upstream, use `https://github.com/hummingbot/hummingbot-gateway.git`.
+> **Note:** This uses the ETCswap fork. Once merged upstream, use `https://github.com/hummingbot/gateway.git`.
 
 ### 2. Install Dependencies
 
