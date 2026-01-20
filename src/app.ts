@@ -284,6 +284,9 @@ const configureGatewayServer = () => {
     app.register(pancakeswapSolRoutes, { prefix: '/connectors/pancakeswap-sol' });
 
     // ETCswap routes (Ethereum Classic)
+    app.register(etcswapRoutes.router, {
+      prefix: '/connectors/etcswap/router',
+    });
     app.register(etcswapRoutes.amm, { prefix: '/connectors/etcswap/amm' });
     app.register(etcswapRoutes.clmm, { prefix: '/connectors/etcswap/clmm' });
   };

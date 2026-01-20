@@ -83,7 +83,7 @@ Both RPC providers maintain full backward compatibility - networks default to st
 | Raydium | Solana | ❌ | ✅ | ✅ | Full-featured DEX with V2 AMM and V3 CLMM |
 | PancakeSwap | Ethereum/EVM | ✅ | ✅ | ✅ | Multi-chain DEX with V2 AMM, V3 CLMM, and Smart Router |
 | Uniswap | Ethereum/EVM | ✅ | ✅ | ✅ | Complete V2 AMM, V3 CLMM, and Smart Order Router |
-| ETCswap | Ethereum Classic | ❌ | ✅ | ✅ | V2 AMM and V3 CLMM on Ethereum Classic (classic, mordor) |
+| ETCswap | Ethereum Classic | ✅ | ✅ | ✅ | Universal Router, V2 AMM, V3 CLMM on Ethereum Classic (classic, mordor) |
 | 0x | Ethereum/EVM | ✅ | ❌ | ❌ | DEX aggregator with professional market making features |
 
 #### Trading Types Explained:

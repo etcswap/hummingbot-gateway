@@ -17,7 +17,7 @@ import { abi as IUniswapV3FactoryABI } from '@uniswap/v3-core/artifacts/contract
 import { abi as IUniswapV3PoolABI } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json';
 import { FeeAmount, Pool as V3Pool } from '@uniswap/v3-sdk';
 import { Contract, constants } from 'ethers';
-import { getAddress } from 'ethers/lib/utils';
+import { getAddress, parseUnits } from 'ethers/lib/utils';
 import JSBI from 'jsbi';
 
 import { Ethereum, TokenInfo } from '../../chains/ethereum/ethereum';
@@ -37,6 +37,7 @@ import {
   isUniversalRouterAvailable,
 } from './etcswap.contracts';
 import { isValidV2Pool, isValidV3Pool } from './etcswap.utils';
+import { ETCswapUniversalRouterService } from './universal-router';
 
 export class ETCswap {
   private static _instances: { [name: string]: ETCswap };
@@ -59,6 +60,9 @@ export class ETCswap {
   private v3Factory: Contract | null = null;
   private v3NFTManager: Contract | null = null;
   private v3Quoter: Contract | null = null;
+
+  // Universal Router service - may be null if not available
+  private universalRouter: ETCswapUniversalRouterService | null = null;
 
   // Network information
   private networkName: string;
@@ -147,6 +151,18 @@ export class ETCswap {
         logger.info(`ETCswap V3 initialized for network: ${this.networkName}`);
       } else {
         logger.info(`ETCswap V3 not available for network: ${this.networkName}, only V2 AMM will be available`);
+      }
+
+      // Initialize Universal Router service if available
+      if (isUniversalRouterAvailable(this.networkName)) {
+        this.universalRouter = new ETCswapUniversalRouterService(
+          this.ethereum.provider,
+          this.chainId,
+          this.networkName,
+        );
+        logger.info(`ETCswap Universal Router initialized for network: ${this.networkName}`);
+      } else {
+        logger.info(`ETCswap Universal Router not available for network: ${this.networkName}`);
       }
 
       // Ensure ethereum is initialized
@@ -429,6 +445,60 @@ export class ETCswap {
       logger.error(`Error getting first wallet address: ${error.message}`);
       return null;
     }
+  }
+
+  /**
+   * Get a quote using the Universal Router
+   * Routes through V2 and V3 pools to find the best swap path
+   * @param inputToken The input token
+   * @param outputToken The output token
+   * @param amount The amount to swap
+   * @param side The trade direction (BUY or SELL)
+   * @param walletAddress The recipient wallet address
+   * @returns Quote result from Universal Router
+   */
+  public async getUniversalRouterQuote(
+    inputToken: Token,
+    outputToken: Token,
+    amount: number,
+    side: 'BUY' | 'SELL',
+    walletAddress?: string,
+  ): Promise<any> {
+    if (!this.universalRouter) {
+      throw new Error(`Universal Router not available for network: ${this.networkName}`);
+    }
+
+    // Determine input/output based on side
+    const exactIn = side === 'SELL';
+    const tokenForAmount = exactIn ? inputToken : outputToken;
+
+    // Convert amount to token units
+    const rawAmount = parseUnits(amount.toString(), tokenForAmount.decimals);
+    const tradeAmount = CurrencyAmount.fromRawAmount(tokenForAmount, rawAmount.toString());
+
+    // Use default protocols (V2 and V3)
+    const protocolsToUse = [Protocol.V2, Protocol.V3];
+
+    // Get slippage from config
+    const slippageTolerance = new Percent(Math.floor(this.config.slippagePct * 100), 10000);
+
+    // Get quote from Universal Router
+    // Use a placeholder address for quotes when no wallet is provided
+    const recipient = walletAddress || '0x0000000000000000000000000000000000000001';
+    const quoteResult = await this.universalRouter.getQuote(
+      inputToken,
+      outputToken,
+      tradeAmount,
+      exactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT,
+      {
+        slippageTolerance,
+        deadline: Math.floor(Date.now() / 1000 + 1800), // 30 minutes
+        recipient,
+        protocols: protocolsToUse,
+      },
+    );
+
+    return quoteResult;
   }
 
   /**

@@ -201,11 +201,11 @@ ETCswap contracts are forks of Uniswap and should be ABI-compatible:
 
 ### Supported Trading Types
 
-| Type | V2 | V3 | Description |
-|------|----|----|-------------|
-| AMM | Yes | - | Constant product (x*y=k) pools |
-| CLMM | - | Yes | Concentrated liquidity positions |
-| Router | - | Yes | Universal Router for optimized swaps |
+| Type | V2 | V3 | Status | Description |
+|------|----|----|--------|-------------|
+| Router | Yes | Yes | ✅ Implemented | Universal Router for optimized cross-V2/V3 swaps |
+| AMM | Yes | - | ✅ Implemented | Constant product (x*y=k) pools |
+| CLMM | - | Yes | ✅ Implemented | Concentrated liquidity positions |
 
 ### Networks to Implement
 

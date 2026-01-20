@@ -11,7 +11,7 @@ Hummingbot Gateway is a **TypeScript-based API middleware** that provides standa
 **Implementation Status:**
 - ✅ ETCswap V2 (AMM) - Complete with swap and liquidity operations
 - ✅ ETCswap V3 (CLMM) - Complete with swap operations (pool-info, quote-swap, execute-swap)
-- ⏳ ETCswap Router (Universal Router) - Future enhancement for optimized cross-V2/V3 routing
+- ✅ ETCswap Router (Universal Router) - Complete with optimized cross-V2/V3 routing (quote-swap, execute-quote, execute-swap)
 
 **Key Reference:** See [docs/ETCSWAP-CONTRACTS.md](../docs/ETCSWAP-CONTRACTS.md) for all ETCswap contract addresses.
 
