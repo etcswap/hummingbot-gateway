@@ -15,6 +15,11 @@ Hummingbot Gateway is a **TypeScript-based API middleware** that provides standa
 
 **Key Reference:** See [docs/ETCSWAP-CONTRACTS.md](../docs/ETCSWAP-CONTRACTS.md) for all ETCswap contract addresses.
 
+**Documentation:**
+- [ETCswap Getting Started Guide](../docs/etcswap/GETTING-STARTED.md)
+- [ETCswap API Reference](../docs/etcswap/API-REFERENCE.md)
+- [Cross-Chain Arbitrage Tutorial](../docs/etcswap/CROSS-CHAIN-ARBITRAGE.md)
+
 ## Tech Stack
 
 **Framework & Runtime:**
