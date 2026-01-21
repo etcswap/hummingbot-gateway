@@ -28,4 +28,11 @@ fastifyLogs: false
 # Log level for the application (debug, info, warn, error)
 logLevel: info
 
+# MCP (Model Context Protocol) configuration
+# Used when running with --with-coingecko flag
+mcp:
+  # CoinGecko tools to load when --with-coingecko is used
+  # Leave empty to load all tools, or specify a subset
+  coingeckoTools: []
+
 # Note: API keys (CoinGecko, Etherscan, etc.) are configured in apiKeys.yml
