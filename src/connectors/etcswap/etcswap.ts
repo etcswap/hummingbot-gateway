@@ -28,7 +28,7 @@ import { ETCswapConfig } from './etcswap.config';
 import {
   IUniswapV2PairABI,
   IUniswapV2FactoryABI,
-  IUniswapV2Router02ABI,
+  IEtcswapV2Router02ABI,
   getETCswapV2RouterAddress,
   getETCswapV2FactoryAddress,
   getETCswapV3NftManagerAddress,
@@ -104,7 +104,7 @@ export class ETCswap {
 
       this.v2Router = new Contract(
         getETCswapV2RouterAddress(this.networkName),
-        IUniswapV2Router02ABI.abi,
+        IEtcswapV2Router02ABI.abi,
         this.ethereum.provider,
       );
 

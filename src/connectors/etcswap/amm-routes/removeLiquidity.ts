@@ -8,7 +8,7 @@ import { Ethereum } from '../../../chains/ethereum/ethereum';
 import { RemoveLiquidityResponseType, RemoveLiquidityResponse } from '../../../schemas/amm-schema';
 import { logger } from '../../../services/logger';
 import { ETCswap } from '../etcswap';
-import { getETCswapV2RouterAddress, IUniswapV2Router02ABI, IUniswapV2PairABI } from '../etcswap.contracts';
+import { getETCswapV2RouterAddress, IEtcswapV2Router02ABI, IUniswapV2PairABI } from '../etcswap.contracts';
 import { formatTokenAmount, getETCswapPoolInfo } from '../etcswap.utils';
 import { ETCswapAmmRemoveLiquidityRequest } from '../schemas';
 
@@ -120,7 +120,7 @@ export const removeLiquidityRoute: FastifyPluginAsync = async (fastify) => {
 
         // Get the router contract with signer
         const routerAddress = getETCswapV2RouterAddress(networkToUse);
-        const router = new Contract(routerAddress, IUniswapV2Router02ABI.abi, wallet);
+        const router = new Contract(routerAddress, IEtcswapV2Router02ABI.abi, wallet);
 
         // Calculate slippage-adjusted amounts (0.5% slippage by default)
         const slippageTolerance = new Percent(5, 1000); // 0.5%
@@ -153,8 +153,8 @@ export const removeLiquidityRoute: FastifyPluginAsync = async (fastify) => {
 
         // Check if one of the tokens is WETC
         if (baseTokenObj.symbol === 'WETC') {
-          // Remove liquidity WETC + Token
-          tx = await router.removeLiquidityETH(
+          // Remove liquidity WETC + Token (ETCswap uses removeLiquidityETC instead of removeLiquidityETH)
+          tx = await router.removeLiquidityETC(
             token0IsBase ? token1 : token0, // The non-WETC token
             liquidityToRemove,
             token0IsBase ? quoteTokenMinAmount : baseTokenMinAmount, // Min amount of the token
@@ -164,8 +164,8 @@ export const removeLiquidityRoute: FastifyPluginAsync = async (fastify) => {
             gasOptions,
           );
         } else if (quoteTokenObj.symbol === 'WETC') {
-          // Remove liquidity Token + WETC
-          tx = await router.removeLiquidityETH(
+          // Remove liquidity Token + WETC (ETCswap uses removeLiquidityETC instead of removeLiquidityETH)
+          tx = await router.removeLiquidityETC(
             token0IsBase ? token0 : token1, // The non-WETC token
             liquidityToRemove,
             token0IsBase ? baseTokenMinAmount : quoteTokenMinAmount, // Min amount of the token

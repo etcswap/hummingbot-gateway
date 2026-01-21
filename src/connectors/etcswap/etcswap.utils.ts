@@ -3,8 +3,10 @@ import { Pair as V2Pair } from '@etcswapv2/sdk';
 import { Token } from '@etcswapv2/sdk-core';
 import { FeeAmount, Pool as V3Pool } from '@etcswapv3/sdk';
 import { Contract } from '@ethersproject/contracts';
-// V3 Pool ABI from Uniswap (contracts are ABI-compatible)
+import { Token as UniswapToken } from '@uniswap/sdk-core';
 import { abi as IUniswapV3PoolABI } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json';
+import { Pool as UniswapV3Pool } from '@uniswap/v3-sdk';
+// V3 Pool ABI from Uniswap (contracts are ABI-compatible)
 import { FastifyInstance } from 'fastify';
 import JSBI from 'jsbi';
 
@@ -176,6 +178,54 @@ export function getETCswapV3PoolWithTickProvider(
         // Always return a valid result to prevent errors
         const nextTick = lte ? tick - tickSpacing : tick + tickSpacing;
         return [nextTick, false];
+      },
+    },
+  );
+}
+
+/**
+ * Convert an ETCswap V3 Pool to a Uniswap V3 Pool for position management.
+ * This is needed because NonfungiblePositionManager expects Uniswap's Pool type.
+ * @param etcswapPool The ETCswap V3 Pool to convert
+ * @returns A Uniswap V3 Pool with the same data
+ */
+export function toUniswapPool(etcswapPool: V3Pool): UniswapV3Pool {
+  // Convert ETCswap tokens to Uniswap tokens
+  const token0 = new UniswapToken(
+    etcswapPool.token0.chainId,
+    etcswapPool.token0.address,
+    etcswapPool.token0.decimals,
+    etcswapPool.token0.symbol,
+    etcswapPool.token0.name,
+  );
+  const token1 = new UniswapToken(
+    etcswapPool.token1.chainId,
+    etcswapPool.token1.address,
+    etcswapPool.token1.decimals,
+    etcswapPool.token1.symbol,
+    etcswapPool.token1.name,
+  );
+
+  // Create a Uniswap Pool with the same data
+  return new UniswapV3Pool(
+    token0,
+    token1,
+    etcswapPool.fee,
+    etcswapPool.sqrtRatioX96.toString(),
+    etcswapPool.liquidity.toString(),
+    etcswapPool.tickCurrent,
+    // Add a tick data provider for SDK operations
+    {
+      async getTick(index: number) {
+        return {
+          index,
+          liquidityNet: JSBI.BigInt(0),
+          liquidityGross: JSBI.BigInt(0),
+        };
+      },
+      async nextInitializedTickWithinOneWord(tick: number, lte: boolean, tickSpacing: number) {
+        const nextTick = lte ? tick - tickSpacing : tick + tickSpacing;
+        return [nextTick, false] as [number, boolean];
       },
     },
   );

@@ -7,12 +7,14 @@
  * Uses Uniswap SDKs for calldata generation since ETCswap is ABI-compatible.
  */
 
+import { getCreate2Address } from '@ethersproject/address';
 import { Provider } from '@ethersproject/providers';
+import { keccak256, pack } from '@ethersproject/solidity';
 // Use Uniswap SDKs for Universal Router integration (ABI-compatible)
 import { Protocol, Trade as RouterTrade } from '@uniswap/router-sdk';
 import { TradeType, Percent, Currency, CurrencyAmount, Token } from '@uniswap/sdk-core';
 import { SwapRouter, SwapOptions } from '@uniswap/universal-router-sdk';
-import { Pair as V2Pair, Route as V2Route, Trade as V2Trade, computePairAddress } from '@uniswap/v2-sdk';
+import { Pair as V2Pair, Route as V2Route, Trade as V2Trade } from '@uniswap/v2-sdk';
 import IUniswapV3Pool from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json';
 import {
   Pool as V3Pool,
@@ -35,8 +37,27 @@ import {
   getETCswapV3FactoryAddress,
   getETCswapV2FactoryAddress,
   getUniversalRouterAddress,
+  getETCswapV2InitCodeHash,
   ETCSWAP_V3_INIT_CODE_HASH,
 } from './etcswap.contracts';
+
+/**
+ * Compute ETCswap V2 pair address using the correct INIT_CODE_HASH
+ * This is necessary because ETCswap has a different INIT_CODE_HASH than Uniswap
+ */
+function computeETCswapV2PairAddress(
+  factoryAddress: string,
+  tokenA: Token,
+  tokenB: Token,
+  initCodeHash: string,
+): string {
+  const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA];
+  return getCreate2Address(
+    factoryAddress,
+    keccak256(['bytes'], [pack(['address', 'address'], [token0.address, token1.address])]),
+    initCodeHash,
+  );
+}
 
 // Common fee tiers for V3
 const V3_FEE_TIERS = [FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH];
@@ -341,13 +362,10 @@ export class ETCswapUniversalRouterService {
   ): Promise<V2Trade<Currency, Currency, TradeType> | null> {
     try {
       const factoryAddress = getETCswapV2FactoryAddress(this.network);
+      const initCodeHash = getETCswapV2InitCodeHash(this.network);
 
-      // Compute pair address
-      const pairAddress = computePairAddress({
-        factoryAddress,
-        tokenA: tokenIn,
-        tokenB: tokenOut,
-      });
+      // Compute pair address using ETCswap's INIT_CODE_HASH
+      const pairAddress = computeETCswapV2PairAddress(factoryAddress, tokenIn, tokenOut, initCodeHash);
 
       const pairContract = new Contract(pairAddress, IUniswapV2PairABI.abi, this.provider);
       const reserves = await pairContract.getReserves();

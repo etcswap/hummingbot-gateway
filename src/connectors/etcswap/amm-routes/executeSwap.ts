@@ -9,7 +9,7 @@ import { httpErrors } from '../../../services/error-handler';
 import { logger } from '../../../services/logger';
 import { ETCswap } from '../etcswap';
 import { ETCswapConfig } from '../etcswap.config';
-import { getETCswapV2RouterAddress, IUniswapV2Router02ABI } from '../etcswap.contracts';
+import { getETCswapV2RouterAddress, IEtcswapV2Router02ABI } from '../etcswap.contracts';
 import { formatTokenAmount } from '../etcswap.utils';
 import { ETCswapAmmExecuteSwapRequest } from '../schemas';
 
@@ -96,7 +96,7 @@ export async function executeAmmSwap(
       const nonce = await ethereum.provider.getTransactionCount(walletAddress, 'latest');
 
       // Build the swap transaction data
-      const iface = new utils.Interface(IUniswapV2Router02ABI.abi);
+      const iface = new utils.Interface(IEtcswapV2Router02ABI.abi);
       let data;
 
       if (side === 'SELL') {
@@ -161,7 +161,7 @@ export async function executeAmmSwap(
         throw httpErrors.internalServerError(`Failed to load wallet: ${err.message}`);
       }
 
-      const routerContract = new Contract(routerAddress, IUniswapV2Router02ABI.abi, wallet);
+      const routerContract = new Contract(routerAddress, IEtcswapV2Router02ABI.abi, wallet);
 
       // Get gas options using estimateGasPrice
       const gasOptions = await ethereum.prepareGasOptions(undefined, AMM_SWAP_GAS_LIMIT);

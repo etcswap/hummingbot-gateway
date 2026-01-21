@@ -218,9 +218,39 @@ The SDK source code is maintained at: https://github.com/etcswap/sdks
 
 ### Contract Compatibility
 
-ETCswap contracts are forks of Uniswap and should be ABI-compatible:
-- V2 contracts use the same interface as Uniswap V2
-- V3 contracts use the same interface as Uniswap V3
+ETCswap contracts are forks of Uniswap with key differences:
+
+#### V2 Router Function Names
+The ETCswap V2 Router uses **`ETC`** instead of **`ETH`** in function names for native token operations:
+
+| Uniswap V2 Function | ETCswap V2 Function |
+|---------------------|---------------------|
+| `addLiquidityETH` | `addLiquidityETC` |
+| `removeLiquidityETH` | `removeLiquidityETC` |
+| `removeLiquidityETHSupportingFeeOnTransferTokens` | `removeLiquidityETCSupportingFeeOnTransferTokens` |
+| `removeLiquidityETHWithPermit` | `removeLiquidityETCWithPermit` |
+| `removeLiquidityETHWithPermitSupportingFeeOnTransferTokens` | `removeLiquidityETCWithPermitSupportingFeeOnTransferTokens` |
+| `swapExactETHForTokens` | `swapExactETCForTokens` |
+| `swapETHForExactTokens` | `swapETCForExactTokens` |
+| `swapExactTokensForETH` | `swapExactTokensForETC` |
+| `swapTokensForExactETH` | `swapTokensForExactETC` |
+| `swapExactETHForTokensSupportingFeeOnTransferTokens` | `swapExactETCForTokensSupportingFeeOnTransferTokens` |
+| `swapExactTokensForETHSupportingFeeOnTransferTokens` | `swapExactTokensForETCSupportingFeeOnTransferTokens` |
+
+> **Note:** Token-to-token functions (`addLiquidity`, `removeLiquidity`, `swapExactTokensForTokens`, etc.) remain the same as Uniswap V2.
+
+#### V2 INIT_CODE_HASH
+ETCswap V2 has its own INIT_CODE_HASH values for computing pair addresses via CREATE2. These differ from Uniswap V2 and also differ between networks:
+
+| Network | INIT_CODE_HASH |
+|---------|----------------|
+| Classic | `0xb5e58237f3a44220ffc3dfb989e53735df8fcd9df82c94b13105be8380344e52` |
+| Mordor | `0x4d8a51f257ed377a6ac3f829cd4226c892edbbbcb87622bcc232807b885b1303` |
+
+> **Important:** Do not use `@uniswap/v2-sdk`'s `computePairAddress` function directly as it uses Uniswap's INIT_CODE_HASH. Use the ETCswap-specific INIT_CODE_HASH values above.
+
+#### V3 Contracts
+V3 contracts are ABI-compatible with Uniswap V3 and use the same function names
 
 ### Supported Trading Types
 

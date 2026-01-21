@@ -11,7 +11,7 @@ import { AddLiquidityResponseType, AddLiquidityResponse } from '../../../schemas
 import { logger } from '../../../services/logger';
 import { ETCswap } from '../etcswap';
 import { ETCswapConfig } from '../etcswap.config';
-import { IUniswapV2Router02ABI } from '../etcswap.contracts';
+import { IEtcswapV2Router02ABI } from '../etcswap.contracts';
 import { formatTokenAmount, getETCswapPoolInfo } from '../etcswap.utils';
 import { ETCswapAmmAddLiquidityRequest } from '../schemas';
 
@@ -95,7 +95,7 @@ async function addLiquidity(
   }
 
   // Get the router contract with signer
-  const router = new Contract(quote.routerAddress, IUniswapV2Router02ABI.abi, wallet);
+  const router = new Contract(quote.routerAddress, IEtcswapV2Router02ABI.abi, wallet);
 
   // Calculate slippage-adjusted amounts
   const slippageTolerance = new Percent(Math.floor(slippagePct * 100), 10000);
@@ -141,8 +141,8 @@ async function addLiquidity(
       );
     }
 
-    // Add liquidity ETC + Token
-    tx = await router.addLiquidityETH(
+    // Add liquidity ETC + Token (ETCswap uses addLiquidityETC instead of addLiquidityETH)
+    tx = await router.addLiquidityETC(
       quote.quoteTokenObj.address,
       quote.rawQuoteTokenAmount,
       quoteTokenMinAmount,
@@ -179,13 +179,13 @@ async function addLiquidity(
       );
     }
 
-    // Add liquidity Token + ETC
+    // Add liquidity Token + ETC (ETCswap uses addLiquidityETC instead of addLiquidityETH)
     // Convert gasPrice from wei to gwei if provided
     const gasPriceGwei = gasPrice ? parseFloat(utils.formatUnits(gasPrice, 'gwei')) : undefined;
     const gasOptions = await ethereum.prepareGasOptions(gasPriceGwei, maxGas || AMM_ADD_LIQUIDITY_GAS_LIMIT);
     gasOptions.value = quote.rawQuoteTokenAmount;
 
-    tx = await router.addLiquidityETH(
+    tx = await router.addLiquidityETC(
       quote.baseTokenObj.address,
       quote.rawBaseTokenAmount,
       baseTokenMinAmount,

@@ -101,8 +101,30 @@ export const contractAddresses: NetworkContractAddresses = {
 };
 
 /**
+ * V2 Pair INIT_CODE_HASH for ETCswap
+ * Used for computing pair addresses with CREATE2
+ * Different for each network due to separate deployments
+ */
+export const ETCSWAP_V2_INIT_CODE_HASH_MAP: { [network: string]: string } = {
+  classic: '0xb5e58237f3a44220ffc3dfb989e53735df8fcd9df82c94b13105be8380344e52',
+  mordor: '0x4d8a51f257ed377a6ac3f829cd4226c892edbbbcb87622bcc232807b885b1303',
+};
+
+/**
+ * Get V2 INIT_CODE_HASH for a network
+ */
+export function getETCswapV2InitCodeHash(network: string): string {
+  const hash = ETCSWAP_V2_INIT_CODE_HASH_MAP[network];
+  if (!hash) {
+    throw new Error(`ETCswap V2 INIT_CODE_HASH not configured for network: ${network}`);
+  }
+  return hash;
+}
+
+/**
  * V3 Pool INIT_CODE_HASH for ETCswap
  * Used for computing pool addresses
+ * Same for both Classic and Mordor networks
  */
 export const ETCSWAP_V3_INIT_CODE_HASH = '0x7ea2da342810af3c5a9b47258f990aaac829fe1385a1398feb77d0126a85dbef';
 
@@ -251,16 +273,191 @@ export function isUniversalRouterAvailable(network: string): boolean {
 }
 
 /**
- * ABI Definitions - Reusing Uniswap ABIs since ETCswap is ABI-compatible
+ * ABI Definitions
+ *
+ * NOTE: ETCswap V3 contracts are ABI-compatible with Uniswap V3.
+ * However, ETCswap V2 Router uses different function names:
+ * - addLiquidityETC instead of addLiquidityETH
+ * - removeLiquidityETC instead of removeLiquidityETH
+ * - swapExactETCForTokens instead of swapExactETHForTokens
+ * - swapTokensForExactETC instead of swapTokensForExactETH
+ * - swapExactTokensForETC instead of swapExactTokensForETH
+ * - swapETCForExactTokens instead of swapETHForExactTokens
+ *
+ * The token-to-token functions (swapExactTokensForTokens, addLiquidity, removeLiquidity)
+ * have the same names in both Uniswap and ETCswap.
  */
 
-// Re-export ABIs from uniswap.contracts.ts for compatibility
+// Re-export V3 ABIs from uniswap.contracts.ts since ETCswap V3 is ABI-compatible
 export {
   IQuoterV2ABI,
   ISwapRouter02ABI,
-  IUniswapV2Router02ABI,
   IUniswapV2PairABI,
   IUniswapV2FactoryABI,
   POSITION_MANAGER_ABI,
   ERC20_ABI,
 } from '../uniswap/uniswap.contracts';
+
+/**
+ * ETCswap V2 Router ABI for swap and liquidity methods
+ * Uses ETC function names instead of ETH (e.g., addLiquidityETC instead of addLiquidityETH)
+ */
+export const IEtcswapV2Router02ABI = {
+  abi: [
+    // Router methods for swapping with native ETC
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountOutMin', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapExactETCForTokens',
+      outputs: [{ internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' }],
+      stateMutability: 'payable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountIn', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountOutMin', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapExactTokensForETC',
+      outputs: [{ internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' }],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountIn', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountOutMin', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapExactTokensForTokens',
+      outputs: [{ internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' }],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountOut', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapETCForExactTokens',
+      outputs: [{ internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' }],
+      stateMutability: 'payable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountOut', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountInMax', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapTokensForExactETC',
+      outputs: [{ internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' }],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountOut', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountInMax', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapTokensForExactTokens',
+      outputs: [{ internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' }],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    // Router methods for adding/removing liquidity
+    {
+      inputs: [
+        { internalType: 'address', name: 'tokenA', type: 'address' },
+        { internalType: 'address', name: 'tokenB', type: 'address' },
+        { internalType: 'uint256', name: 'amountADesired', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountBDesired', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountAMin', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountBMin', type: 'uint256' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'addLiquidity',
+      outputs: [
+        { internalType: 'uint256', name: 'amountA', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountB', type: 'uint256' },
+        { internalType: 'uint256', name: 'liquidity', type: 'uint256' },
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'address', name: 'token', type: 'address' },
+        {
+          internalType: 'uint256',
+          name: 'amountTokenDesired',
+          type: 'uint256',
+        },
+        { internalType: 'uint256', name: 'amountTokenMin', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountETCMin', type: 'uint256' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'addLiquidityETC',
+      outputs: [
+        { internalType: 'uint256', name: 'amountToken', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountETC', type: 'uint256' },
+        { internalType: 'uint256', name: 'liquidity', type: 'uint256' },
+      ],
+      stateMutability: 'payable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'address', name: 'tokenA', type: 'address' },
+        { internalType: 'address', name: 'tokenB', type: 'address' },
+        { internalType: 'uint256', name: 'liquidity', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountAMin', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountBMin', type: 'uint256' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'removeLiquidity',
+      outputs: [
+        { internalType: 'uint256', name: 'amountA', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountB', type: 'uint256' },
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'address', name: 'token', type: 'address' },
+        { internalType: 'uint256', name: 'liquidity', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountTokenMin', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountETCMin', type: 'uint256' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'removeLiquidityETC',
+      outputs: [
+        { internalType: 'uint256', name: 'amountToken', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountETC', type: 'uint256' },
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+  ],
+};
