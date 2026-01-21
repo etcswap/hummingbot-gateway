@@ -332,6 +332,8 @@ This Gateway is part of the ETCswap/Hummingbot integration:
 
 ## PR Submission to Upstream
 
+**Detailed Checklist:** See [docs/PR-SUBMISSION-CHECKLIST.md](../docs/PR-SUBMISSION-CHECKLIST.md) for complete requirements.
+
 ### Branch Strategy
 
 | Branch | Purpose |
@@ -339,23 +341,43 @@ This Gateway is part of the ETCswap/Hummingbot integration:
 | `etcswap` | Community development (includes docs, fork URLs) |
 | `feat/etcswap-v28-upgrade` | Clean PR branch for upstream submission |
 
+### Hummingbot Gateway v2.8 Standards
+
+Gateway connectors must implement standardized endpoints for three trading types:
+
+| Type | Description | Required Endpoints |
+|------|-------------|-------------------|
+| **Router** | DEX aggregators for optimal routing | `quoteSwap`, `executeSwap`, `executeQuote` |
+| **AMM** | V2-style constant product pools | `quoteSwap`, `executeSwap`, `addLiquidity`, `removeLiquidity`, `poolInfo`, `positionInfo` |
+| **CLMM** | V3-style concentrated liquidity | `quoteSwap`, `executeSwap`, `openPosition`, `closePosition`, `addLiquidity`, `removeLiquidity`, `collectFees`, `poolInfo`, `positionInfo`, `positionsOwned` |
+
 ### PR Requirements (v2.8 Standard)
 
-1. **Schemas Required:**
+1. **Trading Types Implemented:**
    - Router (Universal Router) - `/connectors/etcswap/router/*`
    - AMM (V2 pools) - `/connectors/etcswap/amm/*`
    - CLMM (V3 positions) - `/connectors/etcswap/clmm/*`
 
-2. **Test Coverage:** >75% (`pnpm test:cov`)
+2. **Test Coverage:** Minimum 75% coverage (`pnpm test:cov`)
+   - Unit tests for all route handlers
+   - Contract address/configuration tests
+   - Error handling tests
 
 3. **Code Quality:**
-   - `pnpm lint:fix` passes
-   - `pnpm format` passes
-   - No `any` types (except SDK workaround if needed)
+   - `pnpm lint` passes with no errors
+   - `pnpm typecheck` passes
+   - `pnpm build` succeeds
+   - No `any` types (except SDK workarounds with justification)
+   - Fastify httpErrors for API error responses
 
 4. **Configuration Files:**
-   - Token list: `src/templates/tokens/ethereum/classic.json`
-   - Connector config: `src/templates/etcswap.yml`
+   - Network configs: `src/templates/chains/ethereum/classic.yml`, `mordor.yml`
+   - Token lists: `src/templates/tokens/ethereum/classic.json`, `mordor.json`
+   - Connector config: `src/templates/connectors/etcswap.yml`
+
+5. **Documentation:**
+   - Contract addresses in `docs/ETCSWAP-CONTRACTS.md`
+   - Implementation notes for differences from Uniswap
 
 ### Creating PR Branch
 
@@ -371,15 +393,54 @@ git checkout -b feat/etcswap-v28-upgrade
 git log --oneline origin/etcswap | grep -v "docs:"
 # Selectively cherry-pick relevant commits
 
+# Pre-submission checks
+pnpm clean && pnpm install
+pnpm lint && pnpm typecheck && pnpm build && pnpm test
+
 # Submit PR
-gh pr create --base development --title "feat: add ETCswap v2.8 connector"
+gh pr create --base development --title "feat: add ETCswap V2 and V3 connector for Ethereum Classic"
 ```
 
-### Governance
+### PR Template
+
+```markdown
+## Summary
+- Add ETCswap V2 (AMM) and V3 (CLMM) connector for Ethereum Classic
+- Networks: Classic (Chain ID 61) and Mordor testnet (Chain ID 63)
+- Trading types: Router, AMM, CLMM
+
+## Changes
+- New connector: `src/connectors/etcswap/`
+- Network configs: `src/templates/chains/ethereum/classic.yml`, `mordor.yml`
+- Token lists: `src/templates/tokens/ethereum/classic.json`, `mordor.json`
+
+## Test Coverage
+- X% coverage for new code
+- Unit tests for contracts, routes, configuration
+
+## Notes
+- ETCswap V2 uses `ETC` suffix in function names (not `ETH`)
+- V2 INIT_CODE_HASH differs per network
+- V3 contracts are ABI-compatible with Uniswap V3
+```
+
+### Governance (Post-Merge)
 
 After PR is merged, submit NCP (New Connector Proposal) on Snapshot:
-- Requires 200,000 HBOT tokens
-- https://snapshot.org/#/hbot-ncp.eth
+
+| Requirement | Details |
+|-------------|---------|
+| Platform | https://snapshot.org/#/hbot-ncp.eth |
+| HBOT Tokens | 200,000 HBOT required to create proposal |
+| Voting Period | 7 days |
+| Quorum | Must meet minimum participation threshold |
+
+**NCP Proposal Content:**
+- Connector name and description
+- Networks supported (Classic, Mordor)
+- Link to merged Gateway PR
+- Organization/team submitting
+- Maintenance commitment
 
 ---
 
