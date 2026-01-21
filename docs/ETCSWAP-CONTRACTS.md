@@ -28,7 +28,7 @@ We are implementing ETCswap V2 (AMM) and V3 (CLMM) connectors for:
 | Token | Symbol | Address | Decimals |
 |-------|--------|---------|----------|
 | Wrapped ETC | WETC | `0x1953cab0E5bFa6D4a9BaD6E05fD46C1CC6527a5a` | 18 |
-| Classic USD Stablecoin | USC | `0xDE093684c796204224BC081f937aa059D903c52a` | 18 |
+| Classic USD Stablecoin | USC | `0xDE093684c796204224BC081f937aa059D903c52a` | 6 |
 
 ### ETCswap V2 Contracts (Mainnet)
 
@@ -38,6 +38,7 @@ We are implementing ETCswap V2 (AMM) and V3 (CLMM) connectors for:
 | Router | `0x79Bf07555C34e68C4Ae93642d1007D7f908d60F5` |
 | Multicall | `0xB945786D5dB40E79F1c25D937cCAC57ab3718BA1` |
 | WETC/USC Liquidity Pool | `0x8B48dE7cCE180ad32A51d8aB5ab28B27c4787aaf` |
+| INIT_CODE_HASH | `0xb5e58237f3a44220ffc3dfb989e53735df8fcd9df82c94b13105be8380344e52` |
 
 ### ETCswap V3 Contracts (Mainnet)
 
@@ -91,7 +92,7 @@ We are implementing ETCswap V2 (AMM) and V3 (CLMM) connectors for:
 | Token | Symbol | Address | Decimals |
 |-------|--------|---------|----------|
 | Wrapped ETC | WETC | `0x1953cab0E5bFa6D4a9BaD6E05fD46C1CC6527a5a` | 18 |
-| Classic USD Stablecoin | USC | `0xDE093684c796204224BC081f937aa059D903c52a` | 18 |
+| Classic USD Stablecoin | USC | `0xDE093684c796204224BC081f937aa059D903c52a` | 6 |
 
 ### ETCswap V2 Contracts (Mordor)
 
@@ -101,6 +102,7 @@ We are implementing ETCswap V2 (AMM) and V3 (CLMM) connectors for:
 | Router | `0x582A87594c86b204920f9e337537b5Aa1fefC07C` |
 | Multicall | `0x41Fa0143ea4b4d91B41BF23d0A03ed3172725C4B` |
 | WETC/USC Liquidity Pool | `0x0a73dc518791Fa8436939C8a8a08003EC782A509` |
+| INIT_CODE_HASH | `0x4d8a51f257ed377a6ac3f829cd4226c892edbbbcb87622bcc232807b885b1303` |
 
 ### ETCswap V3 Contracts (Mordor)
 
@@ -114,7 +116,15 @@ V3 contracts on Mordor testnet use the same addresses as mainnet (classic).
 | Quoter V2 | `0x4d8c163400CB87Cbe1bae76dBf36A09FED85d39B` |
 | Nonfungible Token Position Manager | `0x3CEDe6562D6626A04d7502CC35720901999AB699` |
 | Permit2 | `0x000000000022D473030F116dDEE9F6B43aC78BA3` |
+| Multicall V3 | `0x1E4282069e4822D5E6Fb88B2DbDE014f3E0625a9` |
 | Tick Lens | `0x23B7Bab45c84fA8f68f813D844E8afD44eE8C315` |
+| Proxy Admin | `0x4823673F7cA96A42c4E69C8953de89f4857E193D` |
+| NFT Descriptor Library | `0xa47E8033964FbDa1cEEE77191Fc6188898355c0D` |
+| Nonfungible Token Position Descriptor | `0xBCA1B20B81429cA4ca39AC38a5374A7F41Db2Ed6` |
+| Descriptor Proxy | `0x224c3992F98f75314eE790DFd081017673bd0617` |
+| Migrator | `0x19B067263c36FA09d06bec71B1E1236573D56C00` |
+| Staker | `0x12775aAf6bD5Aca04F0cCD5969b391314868A7e9` |
+| INIT_CODE_HASH | `0x7ea2da342810af3c5a9b47258f990aaac829fe1385a1398feb77d0126a85dbef` |
 
 ---
 
@@ -157,18 +167,31 @@ V3 contracts on Mordor testnet use the same addresses as mainnet (classic).
 
 ETCswap provides official npm packages for SDK integration:
 
-| Package | Description |
-|---------|-------------|
-| `@_etcswap/smart-order-router` | Smart order routing for optimal swap paths across V2 and V3 |
-| `@_etcswap/v2-sdk` | ETCswap V2 SDK for AMM operations |
-| `@_etcswap/v3-core` | ETCswap V3 core contracts and types |
-| `@_etcswap/sdk-core` | Core SDK utilities shared across V2/V3 |
+| Package | Version | Description |
+|---------|---------|-------------|
+| `@etcswapv2/sdk-core` | [![npm](https://img.shields.io/npm/v/@etcswapv2/sdk-core)](https://www.npmjs.com/package/@etcswapv2/sdk-core) | Core types, tokens, and utilities |
+| `@etcswapv2/sdk` | [![npm](https://img.shields.io/npm/v/@etcswapv2/sdk)](https://www.npmjs.com/package/@etcswapv2/sdk) | V2 AMM SDK (Pair, Route, Trade) |
+| `@etcswapv3/sdk` | [![npm](https://img.shields.io/npm/v/@etcswapv3/sdk)](https://www.npmjs.com/package/@etcswapv3/sdk) | V3 CLMM SDK (Pool, Position) |
+| `@etcswapv3/router-sdk` | [![npm](https://img.shields.io/npm/v/@etcswapv3/router-sdk)](https://www.npmjs.com/package/@etcswapv3/router-sdk) | Universal Router SDK |
+
+> **Note:** The `@_etcswap/*` packages are deprecated. Use the new `@etcswapv2/*` and `@etcswapv3/*` packages instead.
 
 ### Installation
 
 ```bash
-pnpm add @_etcswap/smart-order-router @_etcswap/v2-sdk @_etcswap/v3-core @_etcswap/sdk-core
+# Using pnpm
+pnpm add @etcswapv2/sdk-core @etcswapv2/sdk @etcswapv3/sdk @etcswapv3/router-sdk
+
+# Using npm
+npm install @etcswapv2/sdk-core @etcswapv2/sdk @etcswapv3/sdk @etcswapv3/router-sdk
+
+# Using yarn
+yarn add @etcswapv2/sdk-core @etcswapv2/sdk @etcswapv3/sdk @etcswapv3/router-sdk
 ```
+
+### SDK Repository
+
+The SDK source code is maintained at: https://github.com/etcswap/sdks
 
 ---
 

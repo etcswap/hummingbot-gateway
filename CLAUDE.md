@@ -282,25 +282,58 @@ node scripts/test-helius-live.js
 This fork is focused on adding ETCswap V2 and V3 connectors for Ethereum Classic.
 
 ### Contract Reference
-See [docs/ETCSWAP-CONTRACTS.md](docs/ETCSWAP-CONTRACTS.md) for all contract addresses.
+**Source of Truth:** [docs/ETCSWAP-CONTRACTS.md](docs/ETCSWAP-CONTRACTS.md) for all contract addresses.
 
-### Networks to Implement
+**CRITICAL:** Always verify addresses against the source of truth document. Never copy addresses from generated reports or other documentation without verification.
+
+### Networks Implemented
 | Network | Config Name | Chain ID | V2 (AMM) | V3 (CLMM) |
 |---------|-------------|----------|----------|-----------|
-| Ethereum Classic | `classic` | 61 | Yes | Yes |
-| Mordor Testnet | `mordor` | 63 | Yes | TBD |
+| Ethereum Classic | `classic` | 61 | ✅ | ✅ |
+| Mordor Testnet | `mordor` | 63 | ✅ | ✅ |
+
+### Key Contract Addresses
+
+**V2 Contracts (DIFFERENT per network):**
+| Contract | Classic | Mordor |
+|----------|---------|--------|
+| Factory | `0x0307cd3D7DA98A29e6Ed0D2137be386Ec1e4Bc9C` | `0x212eE1B5c8C26ff5B2c4c14CD1C54486Fe23ce70` |
+| Router | `0x79Bf07555C34e68C4Ae93642d1007D7f908d60F5` | `0x582A87594c86b204920f9e337537b5Aa1fefC07C` |
+| INIT_CODE_HASH | `0xb5e58237...` | `0x4d8a51f2...` |
+
+**V3 Contracts (SAME for both networks):**
+| Contract | Address |
+|----------|---------|
+| Factory | `0x2624E907BcC04f93C8f29d7C7149a8700Ceb8cDC` |
+| SwapRouter02 | `0xEd88EDD995b00956097bF90d39C9341BBde324d1` |
+| Universal Router | `0x9b676E761040D60C6939dcf5f582c2A4B51025F1` |
+| QuoterV2 | `0x4d8c163400CB87Cbe1bae76dBf36A09FED85d39B` |
+| Position Manager | `0x3CEDe6562D6626A04d7502CC35720901999AB699` |
+| Permit2 | `0x000000000022D473030F116dDEE9F6B43aC78BA3` |
+| INIT_CODE_HASH | `0x7ea2da342810af3c5a9b47258f990aaac829fe1385a1398feb77d0126a85dbef` |
+
+**Core Tokens (same for both networks):**
+| Token | Address | Decimals |
+|-------|---------|----------|
+| WETC | `0x1953cab0E5bFa6D4a9BaD6E05fD46C1CC6527a5a` | 18 |
+| USC | `0xDE093684c796204224BC081f937aa059D903c52a` | 6 |
 
 ### Key Differences from Uniswap
 1. **Native Asset**: ETC instead of ETH
 2. **Wrapped Token**: WETC at `0x1953cab0E5bFa6D4a9BaD6E05fD46C1CC6527a5a`
 3. **RPC**: `https://etc.rivet.link` (classic), `https://rpc.mordor.etccooperative.org` (mordor)
+4. **V2 addresses differ per network** - Mordor has different V2 contracts than Classic
+5. **V3 addresses are identical** - Same contracts deployed to both networks
+6. **INIT_CODE_HASH values differ from Uniswap** - Must use ETCswap-specific hashes
 
-### Implementation Steps
-1. Add ETC network configs: `src/templates/chains/ethereum/classic.yml` and `mordor.yml`
-2. Add token lists: `src/templates/tokens/ethereum/classic.json` and `mordor.json`
-3. Create ETCswap connector in `src/connectors/etcswap/`
-4. Register routes in `src/app.ts`
-5. Add to `src/config/routes/getConnectors.ts`
+### ETCswap SDKs
+Use the official ETCswap SDK packages (NOT `@_etcswap/*` which are deprecated):
+
+```bash
+pnpm add @etcswapv2/sdk-core @etcswapv2/sdk @etcswapv3/sdk @etcswapv3/router-sdk
+```
+
+SDK Repository: https://github.com/etcswap/sdks
 
 ### ETCswap Links
 - V2 App: https://v2.etcswap.org

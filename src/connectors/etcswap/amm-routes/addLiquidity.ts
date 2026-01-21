@@ -1,6 +1,7 @@
+import { Percent } from '@etcswapv2/sdk-core';
 import { Contract } from '@ethersproject/contracts';
 import { Static } from '@sinclair/typebox';
-import { Percent } from '@uniswap/sdk-core';
+// ETCswap SDK imports - Using unified ETCswap SDKs for type consistency
 import { BigNumber, utils } from 'ethers';
 import { FastifyPluginAsync } from 'fastify';
 

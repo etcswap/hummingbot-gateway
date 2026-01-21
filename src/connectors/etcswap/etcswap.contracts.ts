@@ -6,19 +6,24 @@
  * ETCswap is a fork of Uniswap deployed on Ethereum Classic.
  * Contracts are ABI-compatible with Uniswap V2 and V3.
  *
- * Last updated: January 2025
- * Sources:
- * - ETCswap V2: https://v2.etcswap.org
- * - ETCswap V3: https://v3.etcswap.org
+ * Last updated: January 2026
+ * Source of truth: https://github.com/etcswap/sdks/blob/main/deployed-contracts.md
  *
- * NPM Packages:
- * - @_etcswap/smart-order-router: Smart order routing for optimal swap paths
- * - @_etcswap/v2-sdk: ETCswap V2 SDK for AMM operations
- * - @_etcswap/v3-core: ETCswap V3 core contracts and types
- * - @_etcswap/sdk-core: Core SDK utilities shared across V2/V3
+ * NPM Packages (official):
+ * - @etcswapv2/sdk-core: Core SDK utilities shared across V2/V3
+ * - @etcswapv2/sdk: ETCswap V2 SDK for AMM operations
+ * - @etcswapv3/sdk: ETCswap V3 CLMM SDK
+ * - @etcswapv3/router-sdk: Universal Router SDK
+ *
+ * NOTE: The @_etcswap/* packages are DEPRECATED. Use @etcswapv2/* and @etcswapv3/* instead.
  *
  * Installation:
- *   pnpm add @_etcswap/smart-order-router @_etcswap/v2-sdk @_etcswap/v3-core @_etcswap/sdk-core
+ *   pnpm add @etcswapv2/sdk-core @etcswapv2/sdk @etcswapv3/sdk @etcswapv3/router-sdk
+ *
+ * Key differences from Uniswap:
+ * - V2 contracts are DIFFERENT on Classic vs Mordor
+ * - V3 contracts are SAME on both networks
+ * - INIT_CODE_HASH values differ from Uniswap
  */
 
 export interface ETCswapContractAddresses {

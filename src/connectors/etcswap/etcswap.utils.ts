@@ -1,8 +1,10 @@
+// ETCswap SDK imports - Using unified ETCswap SDKs for type consistency
+import { Pair as V2Pair } from '@etcswapv2/sdk';
+import { Token } from '@etcswapv2/sdk-core';
+import { FeeAmount, Pool as V3Pool } from '@etcswapv3/sdk';
 import { Contract } from '@ethersproject/contracts';
-import { Token } from '@uniswap/sdk-core';
-import { Pair as V2Pair } from '@uniswap/v2-sdk';
+// V3 Pool ABI from Uniswap (contracts are ABI-compatible)
 import { abi as IUniswapV3PoolABI } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json';
-import { FeeAmount, Pool as V3Pool } from '@uniswap/v3-sdk';
 import { FastifyInstance } from 'fastify';
 import JSBI from 'jsbi';
 

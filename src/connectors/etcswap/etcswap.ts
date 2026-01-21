@@ -9,13 +9,14 @@
  * - mordor: Mordor testnet (chain ID 63)
  */
 
-// V3 (CLMM) imports - Reuse Uniswap SDK since ETCswap is ABI-compatible
-import { Protocol } from '@uniswap/router-sdk';
-import { Token, CurrencyAmount, Percent, TradeType } from '@uniswap/sdk-core';
-import { Pair as V2Pair } from '@uniswap/v2-sdk';
+// ETCswap SDK imports - Using unified ETCswap SDKs for type consistency
+import { Pair as V2Pair } from '@etcswapv2/sdk';
+import { Token, CurrencyAmount, Percent, TradeType } from '@etcswapv2/sdk-core';
+import { Protocol } from '@etcswapv3/router-sdk';
+import { FeeAmount, Pool as V3Pool } from '@etcswapv3/sdk';
+// V3 ABIs from Uniswap (contracts are ABI-compatible)
 import { abi as IUniswapV3FactoryABI } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Factory.sol/IUniswapV3Factory.json';
 import { abi as IUniswapV3PoolABI } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json';
-import { FeeAmount, Pool as V3Pool } from '@uniswap/v3-sdk';
 import { Contract, constants } from 'ethers';
 import { getAddress, parseUnits } from 'ethers/lib/utils';
 import JSBI from 'jsbi';

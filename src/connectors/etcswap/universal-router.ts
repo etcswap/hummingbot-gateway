@@ -4,10 +4,11 @@
  * Provides routing functionality across ETCswap V2 and V3 pools
  * using the Universal Router contract on Ethereum Classic.
  *
- * Uses Uniswap SDKs since ETCswap is ABI-compatible.
+ * Uses Uniswap SDKs for calldata generation since ETCswap is ABI-compatible.
  */
 
 import { Provider } from '@ethersproject/providers';
+// Use Uniswap SDKs for Universal Router integration (ABI-compatible)
 import { Protocol, Trade as RouterTrade } from '@uniswap/router-sdk';
 import { TradeType, Percent, Currency, CurrencyAmount, Token } from '@uniswap/sdk-core';
 import { SwapRouter, SwapOptions } from '@uniswap/universal-router-sdk';
@@ -22,6 +23,8 @@ import {
   nearestUsableTick,
   TICK_SPACINGS,
 } from '@uniswap/v3-sdk';
+// Uniswap Universal Router SDK for calldata generation
+// V3 Pool ABI from Uniswap (contracts are ABI-compatible)
 import { BigNumber, Contract } from 'ethers';
 
 import { Ethereum } from '../../chains/ethereum/ethereum';

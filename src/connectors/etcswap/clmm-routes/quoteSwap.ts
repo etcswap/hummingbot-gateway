@@ -1,5 +1,6 @@
-import { Token, CurrencyAmount, Percent, TradeType } from '@uniswap/sdk-core';
-import { Pool as V3Pool, Route as V3Route, Trade as V3Trade } from '@uniswap/v3-sdk';
+// ETCswap SDK imports - Using unified ETCswap SDKs for type consistency
+import { Token, CurrencyAmount, Percent, TradeType } from '@etcswapv2/sdk-core';
+import { Pool as V3Pool, Route as V3Route, Trade as V3Trade } from '@etcswapv3/sdk';
 import { BigNumber, utils } from 'ethers';
 import { FastifyPluginAsync } from 'fastify';
 import JSBI from 'jsbi';

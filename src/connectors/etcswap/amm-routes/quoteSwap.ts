@@ -1,5 +1,6 @@
-import { Token, CurrencyAmount, Percent, TradeType } from '@uniswap/sdk-core';
-import { Pair as V2Pair, Route as V2Route, Trade as V2Trade } from '@uniswap/v2-sdk';
+// ETCswap SDK imports - Using unified ETCswap SDKs for type consistency
+import { Pair as V2Pair, Route as V2Route, Trade as V2Trade } from '@etcswapv2/sdk';
+import { Token, CurrencyAmount, Percent, TradeType } from '@etcswapv2/sdk-core';
 import { BigNumber } from 'ethers';
 import { FastifyPluginAsync } from 'fastify';
 
