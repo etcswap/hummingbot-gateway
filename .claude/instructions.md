@@ -6,14 +6,39 @@ Instructions for AI coding assistants working on Hummingbot Gateway (hummingbot-
 
 Hummingbot Gateway is a **TypeScript-based API middleware** that provides standardized endpoints for blockchain and DEX interactions. It serves as the bridge between the Hummingbot trading bot (Python) and decentralized exchanges.
 
-**Current Focus:** ETCswap connector development for Ethereum Classic (`classic` mainnet and `mordor` testnet).
+**Current Focus:** ETCswap connector v2.8 upgrade for submission to official Hummingbot Gateway.
 
 **Implementation Status:**
 - ✅ ETCswap V2 (AMM) - Complete with swap and liquidity operations
-- ✅ ETCswap V3 (CLMM) - Complete with swap operations (pool-info, quote-swap, execute-swap)
-- ✅ ETCswap Router (Universal Router) - Complete with optimized cross-V2/V3 routing (quote-swap, execute-quote, execute-swap)
+- ✅ ETCswap V3 (CLMM) - Partial (swap ops complete, LP routes needed)
+- ✅ ETCswap Router (Universal Router) - Complete with optimized cross-V2/V3 routing
+- 🔴 SDK Type Blocker - Type incompatibility in `@_etcswap/*` packages (see below)
 
 **Key Reference:** See [docs/ETCSWAP-CONTRACTS.md](../docs/ETCSWAP-CONTRACTS.md) for all ETCswap contract addresses.
+
+## SDK Type Compatibility Blocker
+
+The Universal Router integration is blocked by **type mismatches** between ETCswap SDKs when passing trade objects to the router-sdk.
+
+**Issue:** Types from `@_etcswap/v2-sdk` and `@_etcswap/v3-sdk` don't match what `@_etcswap/router-sdk` expects.
+
+**Where:** `/connectors/etcSwap/router/quote-swap` endpoint
+
+**Resolution Options:**
+1. Work with leon (SDK maintainer) to fix types
+2. Use type casting workaround (`as any`)
+3. Create new SDKs with proper type compatibility:
+   - https://www.npmjs.com/org/etcswapv2 (V2 protocol)
+   - https://www.npmjs.com/org/etcswapv3 (V3 protocol)
+
+**To reproduce:** Run vic-en's branch and query the router/quote-swap endpoint:
+```bash
+git remote add vic-en https://github.com/vic-en/gateway.git
+git fetch vic-en
+git checkout vic-en/feat/etcSwap_connector
+pnpm install && pnpm start --passphrase=admin --dev
+# Query /connectors/etcSwap/router/quote-swap and check logs
+```
 
 **Documentation:**
 - [ETCswap Getting Started Guide](../docs/etcswap/GETTING-STARTED.md)
@@ -188,13 +213,18 @@ src/connectors/{name}/
 
 ### ETCswap NPM Packages
 
-Official ETCswap SDK packages:
+**Current packages (leon's, have type issues):**
 - `@_etcswap/smart-order-router` - Smart order routing
 - `@_etcswap/v2-sdk` - V2 AMM SDK
 - `@_etcswap/v3-core` - V3 core contracts
 - `@_etcswap/sdk-core` - Shared SDK utilities
+- `@_etcswap/router-sdk` - Universal Router (type conflicts here)
 
-Installation: `pnpm add @_etcswap/smart-order-router @_etcswap/v2-sdk @_etcswap/v3-core @_etcswap/sdk-core`
+**New SDK organizations (for type-compatible packages):**
+- `@etcswapv2/*` - V2 protocol packages
+- `@etcswapv3/*` - V3 protocol packages
+
+Installation (current): `pnpm add @_etcswap/smart-order-router @_etcswap/v2-sdk @_etcswap/v3-core @_etcswap/sdk-core`
 
 ## Protected Files
 
@@ -290,6 +320,57 @@ This Gateway is part of the ETCswap/Hummingbot integration:
 - [ETCswap V3](https://v3.etcswap.org)
 - [Hummingbot](https://hummingbot.org)
 
+## PR Submission to Upstream
+
+### Branch Strategy
+
+| Branch | Purpose |
+|--------|---------|
+| `etcswap` | Community development (includes docs, fork URLs) |
+| `feat/etcswap-v28-upgrade` | Clean PR branch for upstream submission |
+
+### PR Requirements (v2.8 Standard)
+
+1. **Schemas Required:**
+   - Router (Universal Router) - `/connectors/etcswap/router/*`
+   - AMM (V2 pools) - `/connectors/etcswap/amm/*`
+   - CLMM (V3 positions) - `/connectors/etcswap/clmm/*`
+
+2. **Test Coverage:** >75% (`pnpm test:cov`)
+
+3. **Code Quality:**
+   - `pnpm lint:fix` passes
+   - `pnpm format` passes
+   - No `any` types (except SDK workaround if needed)
+
+4. **Configuration Files:**
+   - Token list: `src/templates/tokens/ethereum/classic.json`
+   - Connector config: `src/templates/etcswap.yml`
+
+### Creating PR Branch
+
+```bash
+# Fetch upstream
+git fetch upstream
+
+# Create clean branch from development
+git checkout upstream/development
+git checkout -b feat/etcswap-v28-upgrade
+
+# Cherry-pick connector commits (exclude docs/community content)
+git log --oneline origin/etcswap | grep -v "docs:"
+# Selectively cherry-pick relevant commits
+
+# Submit PR
+gh pr create --base development --title "feat: add ETCswap v2.8 connector"
+```
+
+### Governance
+
+After PR is merged, submit NCP (New Connector Proposal) on Snapshot:
+- Requires 200,000 HBOT tokens
+- https://snapshot.org/#/hbot-ncp.eth
+
 ---
 
-Last updated: 2025-01-20
+Last updated: 2025-01-21
