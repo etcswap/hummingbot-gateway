@@ -16,7 +16,15 @@
     },
     "transactionExecutionTimeoutMs": {
       "type": "number",
-      "description": " Timeout for waiting for transaction execution (in milliseconds)"
+      "description": "Timeout for waiting for transaction execution (in milliseconds)"
+    },
+    "gasLimitTransaction": {
+      "type": "integer",
+      "description": "Gas limit for transactions (legacy parameter, optional)"
+    },
+    "manualGasPrice": {
+      "type": "number",
+      "description": "Manual gas price in GWEI (legacy parameter, optional)"
     },
     "gasPrice": {
       "type": ["number", "null"],
@@ -36,6 +44,6 @@
       "default": 1.2
     }
   },
-  "required": ["chainID", "nodeURL", "nativeCurrencySymbol", "geckoId"],
+  "required": ["chainID", "nodeURL", "nativeCurrencySymbol"],
   "additionalProperties": false
 }

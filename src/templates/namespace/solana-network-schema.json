@@ -20,8 +20,12 @@
     "defaultComputeUnits": { "type": "number" },
     "confirmRetryInterval": { "type": "number" },
     "confirmRetryCount": { "type": "number" },
-    "minPriorityFeePerCU": { "type": "number" }
+    "minPriorityFeePerCU": { "type": "number" },
+    "basePriorityFeePct": {
+      "type": "number",
+      "description": "Floor percentile of recent priority fee samples used to estimate gasPrice (e.g., 90 = 90th percentile)"
+    }
   },
-  "required": ["chainID", "nodeURL", "nativeCurrencySymbol", "geckoId"],
+  "required": ["nodeURL", "nativeCurrencySymbol"],
   "additionalProperties": false
 }
