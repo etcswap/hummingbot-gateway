@@ -195,6 +195,31 @@ The SDK source code is maintained at: https://github.com/etcswap/sdks
 
 ---
 
+## CoinGecko API Integration
+
+The following CoinGecko API IDs can be used for price feeds and analytics:
+
+| Asset | CoinGecko API ID | Description |
+|-------|------------------|-------------|
+| ETC | `ethereum-classic` | Native currency on Ethereum Classic |
+| WETC | `wrapped-ether` | Wrapped ETC token |
+| USC | `classic-usd` | Classic USD stablecoin |
+| ETCswap V2 | `etcswap-v2` | ETCswap V2 DEX |
+| ETCswap V3 | `etcswap-v3` | ETCswap V3 DEX |
+
+### Example API Calls
+
+```bash
+# Get ETC price
+curl "https://api.coingecko.com/api/v3/simple/price?ids=ethereum-classic&vs_currencies=usd"
+
+# Get ETCswap DEX info
+curl "https://api.coingecko.com/api/v3/exchanges/etcswap-v2"
+curl "https://api.coingecko.com/api/v3/exchanges/etcswap-v3"
+```
+
+---
+
 ## Related Projects
 
 | Project | Address/URL |
