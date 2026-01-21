@@ -325,6 +325,11 @@ This fork is focused on adding ETCswap V2 and V3 connectors for Ethereum Classic
 4. **V2 addresses differ per network** - Mordor has different V2 contracts than Classic
 5. **V3 addresses are identical** - Same contracts deployed to both networks
 6. **INIT_CODE_HASH values differ from Uniswap** - Must use ETCswap-specific hashes
+7. **V2 Router Function Names** - Uses `ETC` suffix instead of `ETH`:
+   - `addLiquidityETC` (not `addLiquidityETH`)
+   - `removeLiquidityETC` (not `removeLiquidityETH`)
+   - `swapExactETCForTokens` (not `swapExactETHForTokens`)
+   - etc.
 
 ### ETCswap SDKs
 Use the official ETCswap SDK packages (NOT `@_etcswap/*` which are deprecated):

@@ -10,35 +10,39 @@ Hummingbot Gateway is a **TypeScript-based API middleware** that provides standa
 
 **Implementation Status:**
 - ✅ ETCswap V2 (AMM) - Complete with swap and liquidity operations
-- ✅ ETCswap V3 (CLMM) - Partial (swap ops complete, LP routes needed)
+- ✅ ETCswap V3 (CLMM) - Complete with swap, position management, and liquidity operations
 - ✅ ETCswap Router (Universal Router) - Complete with optimized cross-V2/V3 routing
-- 🔴 SDK Type Blocker - Type incompatibility in `@_etcswap/*` packages (see below)
+- ✅ Networks: Classic (chain 61) and Mordor (chain 63) both supported
+- ✅ Tests: Unit tests for contracts, routes, and configuration
 
 **Key Reference:** See [docs/ETCSWAP-CONTRACTS.md](../docs/ETCSWAP-CONTRACTS.md) for all ETCswap contract addresses.
 
-## SDK Type Compatibility Blocker
+## Important Implementation Notes
 
-The Universal Router integration is blocked by **type mismatches** between ETCswap SDKs when passing trade objects to the router-sdk.
+### V2 Router ABI Differences
+ETCswap V2 Router uses **`ETC`** instead of **`ETH`** in function names:
+- `addLiquidityETC` (not `addLiquidityETH`)
+- `removeLiquidityETC` (not `removeLiquidityETH`)
+- `swapExactETCForTokens` (not `swapExactETHForTokens`)
+- etc.
 
-**Issue:** Types from `@_etcswap/v2-sdk` and `@_etcswap/v3-sdk` don't match what `@_etcswap/router-sdk` expects.
+Token-to-token functions (`addLiquidity`, `swapExactTokensForTokens`, etc.) are the same.
 
-**Where:** `/connectors/etcSwap/router/quote-swap` endpoint
+### V2 INIT_CODE_HASH
+ETCswap V2 has different INIT_CODE_HASH values per network for computing pair addresses:
+- Classic: `0xb5e58237f3a44220ffc3dfb989e53735df8fcd9df82c94b13105be8380344e52`
+- Mordor: `0x4d8a51f257ed377a6ac3f829cd4226c892edbbbcb87622bcc232807b885b1303`
 
-**Resolution Options:**
-1. Work with leon (SDK maintainer) to fix types
-2. Use type casting workaround (`as any`)
-3. Create new SDKs with proper type compatibility:
-   - https://www.npmjs.com/org/etcswapv2 (V2 protocol)
-   - https://www.npmjs.com/org/etcswapv3 (V3 protocol)
+**Important:** Do not use `@uniswap/v2-sdk`'s `computePairAddress` directly.
 
-**To reproduce:** Run vic-en's branch and query the router/quote-swap endpoint:
-```bash
-git remote add vic-en https://github.com/vic-en/gateway.git
-git fetch vic-en
-git checkout vic-en/feat/etcSwap_connector
-pnpm install && pnpm start --passphrase=admin --dev
-# Query /connectors/etcSwap/router/quote-swap and check logs
-```
+### SDKs
+Use the official ETCswap SDK packages:
+- `@etcswapv2/sdk-core` - Core types and utilities
+- `@etcswapv2/sdk` - V2 AMM SDK
+- `@etcswapv3/sdk` - V3 CLMM SDK
+- `@etcswapv3/router-sdk` - Universal Router SDK
+
+SDK Repository: https://github.com/etcswap/sdks
 
 **Documentation:**
 - [ETCswap Getting Started Guide](../docs/etcswap/GETTING-STARTED.md)
@@ -210,21 +214,27 @@ src/connectors/{name}/
 2. **Chain IDs**: 61 (classic), 63 (mordor)
 3. **Wrapped Token**: WETC at `0x1953cab0E5bFa6D4a9BaD6E05fD46C1CC6527a5a`
 4. **Currency Symbol**: ETC (classic), METC (mordor)
+5. **V2 Router Function Names**: Uses `ETC` suffix instead of `ETH` (e.g., `addLiquidityETC`)
+6. **V2 INIT_CODE_HASH**: Different from Uniswap and different per network
+7. **V2 Contract Addresses**: Different between Classic and Mordor
+8. **V3 Contract Addresses**: Same on both Classic and Mordor
 
 ### ETCswap NPM Packages
 
-**Current packages (leon's, have type issues):**
-- `@_etcswap/smart-order-router` - Smart order routing
-- `@_etcswap/v2-sdk` - V2 AMM SDK
-- `@_etcswap/v3-core` - V3 core contracts
-- `@_etcswap/sdk-core` - Shared SDK utilities
-- `@_etcswap/router-sdk` - Universal Router (type conflicts here)
+Use the official ETCswap SDK packages:
 
-**New SDK organizations (for type-compatible packages):**
-- `@etcswapv2/*` - V2 protocol packages
-- `@etcswapv3/*` - V3 protocol packages
+```bash
+pnpm add @etcswapv2/sdk-core @etcswapv2/sdk @etcswapv3/sdk @etcswapv3/router-sdk
+```
 
-Installation (current): `pnpm add @_etcswap/smart-order-router @_etcswap/v2-sdk @_etcswap/v3-core @_etcswap/sdk-core`
+| Package | Description |
+|---------|-------------|
+| `@etcswapv2/sdk-core` | Core types, tokens, and utilities |
+| `@etcswapv2/sdk` | V2 AMM SDK (Pair, Route, Trade) |
+| `@etcswapv3/sdk` | V3 CLMM SDK (Pool, Position) |
+| `@etcswapv3/router-sdk` | Universal Router SDK |
+
+> **Note:** The `@_etcswap/*` packages are deprecated. Use the new `@etcswapv2/*` and `@etcswapv3/*` packages instead.
 
 ## Protected Files
 
