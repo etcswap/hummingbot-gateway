@@ -189,7 +189,7 @@ async function formatSwapQuote(
 
   try {
     // Use the extracted quote function
-    const { quote, etcswap, ethereum, baseTokenObj, quoteTokenObj } = await getETCswapAmmQuote(
+    const { quote, ethereum, baseTokenObj, quoteTokenObj } = await getETCswapAmmQuote(
       network,
       poolAddress,
       baseToken,

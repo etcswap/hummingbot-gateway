@@ -249,7 +249,8 @@ export interface ETCswapPoolInfo {
 export async function getV2PoolInfo(poolAddress: string, network: string): Promise<ETCswapPoolInfo | null> {
   try {
     const ethereum = await Ethereum.getInstance(network);
-    const etcswap = await ETCswap.getInstance(network);
+    // Ensure ETCswap connector is initialized
+    await ETCswap.getInstance(network);
 
     // Create pair contract
     const pairContract = new Contract(poolAddress, IUniswapV2PairABI.abi, ethereum.provider);

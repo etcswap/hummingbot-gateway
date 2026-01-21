@@ -86,7 +86,8 @@ async function addLiquidity(
 
   // Get Ethereum instance
   const ethereum = await Ethereum.getInstance(networkToUse);
-  const etcswap = await ETCswap.getInstance(networkToUse);
+  // Ensure ETCswap connector is initialized
+  await ETCswap.getInstance(networkToUse);
 
   // Get wallet
   const wallet = await ethereum.getWallet(walletAddress);
@@ -331,7 +332,8 @@ export const addLiquidityRoute: FastifyPluginAsync = async (fastify) => {
         }
 
         // Get pool information to determine tokens
-        const etcswap = await ETCswap.getInstance(networkToUse);
+        // Ensure ETCswap connector is initialized
+        await ETCswap.getInstance(networkToUse);
         const poolInfo = await getETCswapPoolInfo(poolAddress, networkToUse, 'amm');
         if (!poolInfo) {
           throw fastify.httpErrors.notFound(`Pool not found: ${poolAddress}`);
