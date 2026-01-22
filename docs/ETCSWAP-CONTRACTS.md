@@ -36,7 +36,7 @@ We are implementing ETCswap V2 (AMM) and V3 (CLMM) connectors for:
 |----------|---------|
 | Factory | `0x0307cd3D7DA98A29e6Ed0D2137be386Ec1e4Bc9C` |
 | Router | `0x79Bf07555C34e68C4Ae93642d1007D7f908d60F5` |
-| Multicall | `0xB945786D5dB40E79F1c25D937cCAC57ab3718BA1` |
+| Multicall | `0x900cD941a2451471BC5760c3d69493Ac57aA9698` |
 | WETC/USC Liquidity Pool | `0x8B48dE7cCE180ad32A51d8aB5ab28B27c4787aaf` |
 | INIT_CODE_HASH | `0xb5e58237f3a44220ffc3dfb989e53735df8fcd9df82c94b13105be8380344e52` |
 
@@ -99,7 +99,7 @@ We are implementing ETCswap V2 (AMM) and V3 (CLMM) connectors for:
 | Contract | Address |
 |----------|---------|
 | Factory | `0x212eE1B5c8C26ff5B2c4c14CD1C54486Fe23ce70` |
-| Router | `0x582A87594c86b204920f9e337537b5Aa1fefC07C` |
+| Router | `0x6d194227a9A1C11f144B35F96E6289c5602Da493` |
 | Multicall | `0x41Fa0143ea4b4d91B41BF23d0A03ed3172725C4B` |
 | WETC/USC Liquidity Pool | `0x0a73dc518791Fa8436939C8a8a08003EC782A509` |
 | INIT_CODE_HASH | `0x4d8a51f257ed377a6ac3f829cd4226c892edbbbcb87622bcc232807b885b1303` |
@@ -303,7 +303,7 @@ V3 contracts are ABI-compatible with Uniswap V3 and use the same function names
 const ETCSWAP_V2_CLASSIC = {
   factory: '0x0307cd3D7DA98A29e6Ed0D2137be386Ec1e4Bc9C',
   router: '0x79Bf07555C34e68C4Ae93642d1007D7f908d60F5',
-  multicall: '0xB945786D5dB40E79F1c25D937cCAC57ab3718BA1',
+  multicall: '0x900cD941a2451471BC5760c3d69493Ac57aA9698',
 };
 
 // ETCswap V3 Mainnet
@@ -331,7 +331,7 @@ const TOKENS_MAINNET = {
 // ETCswap V2 Mordor
 const ETCSWAP_V2_MORDOR = {
   factory: '0x212eE1B5c8C26ff5B2c4c14CD1C54486Fe23ce70',
-  router: '0x582A87594c86b204920f9e337537b5Aa1fefC07C',
+  router: '0x6d194227a9A1C11f144B35F96E6289c5602Da493',
   multicall: '0x41Fa0143ea4b4d91B41BF23d0A03ed3172725C4B',
 };
 

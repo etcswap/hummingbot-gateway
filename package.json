@@ -39,7 +39,7 @@
   "dependencies": {
     "@coral-xyz/anchor": "^0.30.1",
     "@etcswapv2/sdk": "^1.0.2",
-    "@etcswapv2/sdk-core": "^1.0.2",
+    "@etcswapv2/sdk-core": "^1.0.3",
     "@etcswapv3/router-sdk": "^1.0.2",
     "@etcswapv3/sdk": "^1.0.2",
     "@ethersproject/abstract-provider": "5.7.0",

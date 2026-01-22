@@ -36,7 +36,7 @@ describe('ETCswap Utils', () => {
       const mordorRouter = getETCswapV2RouterAddress('mordor');
 
       expect(classicRouter).toBe('0x79Bf07555C34e68C4Ae93642d1007D7f908d60F5');
-      expect(mordorRouter).toBe('0x582A87594c86b204920f9e337537b5Aa1fefC07C');
+      expect(mordorRouter).toBe('0x6d194227a9A1C11f144B35F96E6289c5602Da493');
       expect(classicRouter).not.toBe(mordorRouter);
     });
 

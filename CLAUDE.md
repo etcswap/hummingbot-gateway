@@ -298,8 +298,11 @@ This fork is focused on adding ETCswap V2 and V3 connectors for Ethereum Classic
 | Contract | Classic | Mordor |
 |----------|---------|--------|
 | Factory | `0x0307cd3D7DA98A29e6Ed0D2137be386Ec1e4Bc9C` | `0x212eE1B5c8C26ff5B2c4c14CD1C54486Fe23ce70` |
-| Router | `0x79Bf07555C34e68C4Ae93642d1007D7f908d60F5` | `0x582A87594c86b204920f9e337537b5Aa1fefC07C` |
+| Router | `0x79Bf07555C34e68C4Ae93642d1007D7f908d60F5` | `0x6d194227a9A1C11f144B35F96E6289c5602Da493` |
+| Multicall | `0x900cD941a2451471BC5760c3d69493Ac57aA9698` | `0x41Fa0143ea4b4d91B41BF23d0A03ed3172725C4B` |
 | INIT_CODE_HASH | `0xb5e58237...` | `0x4d8a51f2...` |
+
+*Contracts verified against etcswapv2-ui main branch (Classic) and mordor branch (Mordor)*
 
 **V3 Contracts (SAME for both networks):**
 | Contract | Address |
@@ -311,6 +314,8 @@ This fork is focused on adding ETCswap V2 and V3 connectors for Ethereum Classic
 | Position Manager | `0x3CEDe6562D6626A04d7502CC35720901999AB699` |
 | Permit2 | `0x000000000022D473030F116dDEE9F6B43aC78BA3` |
 | INIT_CODE_HASH | `0x7ea2da342810af3c5a9b47258f990aaac829fe1385a1398feb77d0126a85dbef` |
+
+*V3 contracts verified against etcswapv3-ui etcswap branch*
 
 **Core Tokens (same for both networks):**
 | Token | Address | Decimals |

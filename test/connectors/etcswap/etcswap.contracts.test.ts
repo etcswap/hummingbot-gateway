@@ -31,7 +31,7 @@ describe('ETCswap Contracts Configuration', () => {
     describe('Mordor (testnet)', () => {
       it('should return correct V2 router address for mordor', () => {
         const address = getETCswapV2RouterAddress('mordor');
-        expect(address).toBe('0x582A87594c86b204920f9e337537b5Aa1fefC07C');
+        expect(address).toBe('0x6d194227a9A1C11f144B35F96E6289c5602Da493');
       });
 
       it('should return correct V2 factory address for mordor', () => {

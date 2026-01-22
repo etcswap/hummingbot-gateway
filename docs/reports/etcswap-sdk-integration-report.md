@@ -322,7 +322,7 @@ Note: V3 contracts are the same for both Ethereum Classic and Mordor. V2 contrac
 | Contract | Address |
 |----------|---------|
 | V2 Factory | `0x212eE1B5c8C26ff5B2c4c14CD1C54486Fe23ce70` |
-| V2 Router02 | `0x582A87594c86b204920f9e337537b5Aa1fefC07C` |
+| V2 Router02 | `0x6d194227a9A1C11f144B35F96E6289c5602Da493` |
 | V3 Factory | `0x2624E907BcC04f93C8f29d7C7149a8700Ceb8cDC` |
 | V3 SwapRouter02 | `0xEd88EDD995b00956097bF90d39C9341BBde324d1` |
 | V3 NonfungiblePositionManager | `0x3CEDe6562D6626A04d7502CC35720901999AB699` |

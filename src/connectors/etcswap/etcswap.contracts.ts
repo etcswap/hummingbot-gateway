@@ -58,7 +58,7 @@ export const contractAddresses: NetworkContractAddresses = {
     // V2 contracts - ETCswap V2 on Ethereum Classic mainnet
     etcswapV2RouterAddress: '0x79Bf07555C34e68C4Ae93642d1007D7f908d60F5',
     etcswapV2FactoryAddress: '0x0307cd3D7DA98A29e6Ed0D2137be386Ec1e4Bc9C',
-    etcswapV2MulticallAddress: '0xB945786D5dB40E79F1c25D937cCAC57ab3718BA1',
+    etcswapV2MulticallAddress: '0x900cD941a2451471BC5760c3d69493Ac57aA9698',
 
     // V3 contracts - ETCswap V3 on Ethereum Classic mainnet
     etcswapV3SwapRouter02Address: '0xEd88EDD995b00956097bF90d39C9341BBde324d1',
@@ -78,7 +78,8 @@ export const contractAddresses: NetworkContractAddresses = {
   },
   mordor: {
     // V2 contracts - ETCswap V2 on Mordor testnet
-    etcswapV2RouterAddress: '0x582A87594c86b204920f9e337537b5Aa1fefC07C',
+    // Updated router address to match ETCswap UI mordor branch
+    etcswapV2RouterAddress: '0x6d194227a9A1C11f144B35F96E6289c5602Da493',
     etcswapV2FactoryAddress: '0x212eE1B5c8C26ff5B2c4c14CD1C54486Fe23ce70',
     etcswapV2MulticallAddress: '0x41Fa0143ea4b4d91B41BF23d0A03ed3172725C4B',
 

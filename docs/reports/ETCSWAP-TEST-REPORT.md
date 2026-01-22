@@ -91,7 +91,7 @@ router-routes/*             |    0.00 |     0.00 |    0.00 |    0.00
 
 **Key Verifications:**
 - Classic V2 Router: `0x79Bf07555C34e68C4Ae93642d1007D7f908d60F5`
-- Mordor V2 Router: `0x582A87594c86b204920f9e337537b5Aa1fefC07C`
+- Mordor V2 Router: `0x6d194227a9A1C11f144B35F96E6289c5602Da493`
 - V3 Factory (both networks): `0x2624E907BcC04f93C8f29d7C7149a8700Ceb8cDC`
 - Universal Router (both networks): `0x9b676E761040D60C6939dcf5f582c2A4B51025F1`
 - V2 ABI uses `ETC` suffix (e.g., `addLiquidityETC`, not `addLiquidityETH`)
