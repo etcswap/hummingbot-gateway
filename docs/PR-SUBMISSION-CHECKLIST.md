@@ -9,7 +9,7 @@ This checklist tracks the status of the ETCswap V2 and V3 connector submission t
 | Field | Value |
 |-------|-------|
 | Target Repository | https://github.com/hummingbot/gateway |
-| Target Branch | `main` |
+| Target Branch | `development` |
 | Source Branch | `feat/etcswap-connector` |
 | Connector Name | ETCswap |
 | Networks | Ethereum Classic (`classic`, Chain ID 61), Mordor Testnet (`mordor`, Chain ID 63) |
