@@ -11,7 +11,7 @@
     "name": "Classic USD",
     "symbol": "USC",
     "address": "0xDE093684c796204224BC081f937aa059D903c52a",
-    "decimals": 18
+    "decimals": 6
   },
   {
     "chainId": 61,

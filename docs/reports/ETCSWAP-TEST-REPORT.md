@@ -1,6 +1,6 @@
 # ETCswap Connector Test Report
 
-**Generated:** 2025-01-21
+**Generated:** 2026-01-21
 **Connector Version:** v2.8 (Gateway v2.11.0)
 **Branch:** `etcswap`
 
@@ -10,16 +10,17 @@
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| Total Tests | 89 | :white_check_mark: |
-| Passed | 89 | :white_check_mark: |
+| Total Tests | 107 | :white_check_mark: |
+| Passed | 107 | :white_check_mark: |
 | Failed | 0 | :white_check_mark: |
-| Test Files | 6 | :white_check_mark: |
+| Test Files | 7 | :white_check_mark: |
 | Networks Covered | 2 (classic, mordor) | :white_check_mark: |
 | Trading Types | 3 (Router, AMM, CLMM) | :white_check_mark: |
-| Live Testnet Tests | 16 (Mordor) | :white_check_mark: |
+| Live Mordor Tests | 16 | :white_check_mark: |
+| Live Classic Tests | 18 | :white_check_mark: |
 
 **Minimum Requirement:** 75% coverage for PR submission
-**Current Status:** Core contract tests at 74.64% coverage; live Mordor testnet tests verify real blockchain interactions
+**Current Status:** Core contract tests at 74.64% coverage; live tests on both Mordor testnet and Classic mainnet verify real blockchain interactions
 
 ---
 
@@ -42,19 +43,31 @@ clmm-routes/*               |    0.00 |     0.00 |    0.00 |    0.00
 router-routes/*             |    0.00 |     0.00 |    0.00 |    0.00
 ```
 
-### Live Testnet Verification
+### Live Network Verification
 
-The live tests on Mordor testnet verify actual blockchain interactions:
+#### Mordor Testnet (Chain ID 63)
 
 | Test Category | Verified |
 |---------------|----------|
 | Network Connectivity | RPC connection, chain ID 63 |
-| Wallet Balance | METC, WETC, USC balances |
+| Wallet Balance | 10.0 METC, 10.0 WETC, 100.0 USC |
 | V2 Factory | 27 pairs deployed |
 | V2 WETC/USC Pair | Reserves and token ordering |
 | V3 Factory | Pools at 0.05%, 0.3%, 1% fee tiers |
 | V3 Pool Data | sqrtPriceX96, tick, liquidity |
 | Contract Bytecode | All 6 core contracts verified |
+
+#### Ethereum Classic Mainnet (Chain ID 61)
+
+| Test Category | Verified |
+|---------------|----------|
+| Network Connectivity | RPC connection, chain ID 61 |
+| Wallet Balance | 0.1 ETC, 0.1 WETC, 1.0 USC |
+| V2 Factory | 104 pairs deployed |
+| V2 WETC/USC Pair | Reserves and LP total supply |
+| V3 Factory | 3 pools for WETC/USC at 0.05%, 0.3%, 1% |
+| V3 Pool Data | sqrtPriceX96, tick, liquidity |
+| Contract Bytecode | All 10 core contracts verified |
 
 ---
 
@@ -154,7 +167,7 @@ The live tests on Mordor testnet verify actual blockchain interactions:
 - Token lists: `classic.json`, `mordor.json`
 - Connector config: `etcswap.yml`
 
-### 6. etcswap.live.test.ts (16 tests) - NEW
+### 6. etcswap.live.test.ts (16 tests)
 
 **Purpose:** Live integration tests against Mordor testnet.
 
@@ -187,6 +200,49 @@ V3 Pool (0.3%) Info:
   sqrtPriceX96: 354006316425296827186979
   tick: -246383
   liquidity: 892737352532213030
+```
+
+### 7. etcswap.classic.live.test.ts (18 tests)
+
+**Purpose:** Live integration tests against Ethereum Classic mainnet.
+
+| Test Suite | Tests | Status |
+|------------|-------|--------|
+| Network Connectivity | 3 | :white_check_mark: |
+| Token Contracts | 3 | :white_check_mark: |
+| V2 AMM Contracts | 4 | :white_check_mark: |
+| V3 CLMM Contracts | 3 | :white_check_mark: |
+| Universal Router | 2 | :white_check_mark: |
+| Contract Verification | 2 | :white_check_mark: |
+| Live Tests Status | 1 | :white_check_mark: |
+
+**Live Test Results (Ethereum Classic Mainnet):**
+```
+Wallet: 0x8340818DA9779D6C0E288ea71D83eDbb9d5A2988
+Balance: 0.1 ETC, 0.1 WETC, 1.0 USC
+
+WETC total supply: 3912.614401004801885363
+USC total supply: 44801.41
+
+V2 Factory: 104 pairs
+WETC/USC V2 Pair: 0x8B48dE7cCE180ad32A51d8aB5ab28B27c4787aaf
+  Reserve0 (WETC): 56173581232350948926
+  Reserve1 (USC): 722844744
+  LP Total Supply: 0.000198883262378133
+
+V3 Pools Found:
+  0.05% fee: 0x7E4ABAeF2b18F05B8eB406CF76C23f517bEb3e13
+  0.30% fee: 0x8fA4d94Ec93a839923ceb37194323d081a24f4Ec
+  1.00% fee: 0xFCE89Da20Dd1f0B902B9a544102A14AC7AbA8aed
+
+V3 Pool (0.3%) Info:
+  sqrtPriceX96: 283636350889935886612846
+  tick: -250816
+  liquidity: 818278803031495
+
+Contracts Verified:
+  V2: Factory, Router, Multicall (3)
+  V3: Factory, Swap Router, Quoter, NFT Position Manager, Universal Router, Permit2, Tick Lens (7)
 ```
 
 ---
@@ -222,13 +278,14 @@ V3 Pool (0.3%) Info:
 
 | File | Lines | Tests |
 |------|-------|-------|
+| etcswap.classic.live.test.ts | 360 | 18 |
 | etcswap.live.test.ts | 310 | 16 |
 | etcswap.contracts.test.ts | 185 | 44 |
 | etcswap.utils.test.ts | 160 | 19 |
 | universal-router.test.ts | 100 | 12 |
 | etcswap.routes.test.ts | 97 | 8 |
 | etcswap.config.test.ts | 69 | 10 |
-| **Total** | **921** | **89** |
+| **Total** | **1,281** | **107** |
 
 ### Coverage by Category
 
@@ -241,7 +298,8 @@ V3 Pool (0.3%) Info:
 | Token Configuration | 4 | WETC and USC tokens |
 | File Structure | 8 | All required files exist |
 | Configuration | 10 | Chain, network, trading type constants |
-| Live Blockchain | 16 | Mordor testnet integration |
+| Live Mordor | 16 | Mordor testnet integration |
+| Live Classic | 18 | Classic mainnet integration |
 
 ---
 
@@ -296,8 +354,11 @@ pnpm exec jest --runInBand --coverage \
   --collectCoverageFrom='src/connectors/etcswap/**/*.ts' \
   ./test/connectors/etcswap/
 
-# Run only live tests (requires .env with MORDOR_PRIVATE_KEY)
+# Run only Mordor live tests
 pnpm exec jest --runInBand test/connectors/etcswap/etcswap.live.test.ts
+
+# Run only Classic mainnet live tests
+pnpm exec jest --runInBand test/connectors/etcswap/etcswap.classic.live.test.ts
 
 # Run only unit tests (no network required)
 pnpm exec jest --runInBand \
@@ -310,17 +371,24 @@ pnpm exec jest --runInBand \
 
 ### Live Test Setup
 
-To run live tests on Mordor testnet:
+To run live tests:
 
 1. Copy `.env.example` to `.env`
-2. Add your Mordor testnet private key
-3. Ensure wallet has METC (get from https://faucet.mordortest.net)
+2. Add your private keys:
+   - `MORDOR_PRIVATE_KEY` - Mordor testnet (get METC from https://faucet.mordortest.net)
+   - `CLASSIC_PRIVATE_KEY` - Ethereum Classic mainnet (use dedicated test wallet!)
+3. Ensure wallets have appropriate balances:
+   - Mordor: METC (gas), WETC, USC
+   - Classic: ETC (gas), WETC, USC
+
+**Network Configuration:**
+- Recommended gas price: 2 gwei (observed stalling at 1 gwei on Classic)
 
 ---
 
 ## Conclusion
 
-The ETCswap connector implementation is complete with **89 tests passing**:
+The ETCswap connector implementation is complete with **107 tests passing**:
 
 **Unit Tests (73):**
 - All contract addresses for both networks (Classic and Mordor)
@@ -330,11 +398,18 @@ The ETCswap connector implementation is complete with **89 tests passing**:
 - Complete file structure for Router, AMM, and CLMM trading types
 - All required configuration files
 
-**Live Tests (16):**
-- Verified network connectivity to Mordor testnet
+**Live Mordor Tests (16):**
+- Verified network connectivity to Mordor testnet (chain ID 63)
 - Confirmed V2 Factory has 27 deployed pairs
 - Confirmed WETC/USC V2 pair exists with liquidity
 - Confirmed V3 pools at multiple fee tiers
 - Verified all 6 core contracts have deployed bytecode
+
+**Live Classic Mainnet Tests (18):**
+- Verified network connectivity to Ethereum Classic (chain ID 61)
+- Confirmed V2 Factory has 104 deployed pairs
+- Confirmed WETC/USC V2 pair exists with liquidity
+- Confirmed V3 pools at 0.05%, 0.3%, 1% fee tiers
+- Verified all 10 core contracts have deployed bytecode
 
 The connector is ready for PR submission to upstream Hummingbot Gateway repository.
