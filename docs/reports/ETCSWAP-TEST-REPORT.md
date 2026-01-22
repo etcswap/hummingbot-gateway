@@ -1,6 +1,6 @@
 # ETCswap Connector Test Report
 
-**Generated:** 2026-01-21
+**Generated:** 2026-01-22
 **Connector Version:** v2.8 (Gateway v2.11.0)
 **Branch:** `etcswap`
 
@@ -10,10 +10,10 @@
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| Total Tests | 107 | :white_check_mark: |
-| Passed | 107 | :white_check_mark: |
+| Total Tests | 134 | :white_check_mark: |
+| Passed | 134 | :white_check_mark: |
 | Failed | 0 | :white_check_mark: |
-| Test Files | 7 | :white_check_mark: |
+| Test Files | 8 | :white_check_mark: |
 | Networks Covered | 2 (classic, mordor) | :white_check_mark: |
 | Trading Types | 3 (Router, AMM, CLMM) | :white_check_mark: |
 | Live Mordor Tests | 16 | :white_check_mark: |
@@ -278,20 +278,20 @@ Contracts Verified:
 
 | File | Lines | Tests |
 |------|-------|-------|
-| etcswap.classic.live.test.ts | 360 | 18 |
+| etcswap.classic.live.test.ts | 357 | 18 |
 | etcswap.live.test.ts | 310 | 16 |
-| etcswap.contracts.test.ts | 185 | 44 |
+| etcswap.contracts.test.ts | 279 | 71 |
 | etcswap.utils.test.ts | 160 | 19 |
 | universal-router.test.ts | 100 | 12 |
 | etcswap.routes.test.ts | 97 | 8 |
 | etcswap.config.test.ts | 69 | 10 |
-| **Total** | **1,281** | **107** |
+| **Total** | **1,372** | **134** |
 
 ### Coverage by Category
 
 | Category | Tests | Coverage |
 |----------|-------|----------|
-| Contract Addresses | 25 | V2 and V3 addresses for both networks |
+| Contract Addresses | 52 | V2 and V3 addresses for both networks |
 | INIT_CODE_HASH | 8 | V2 (per-network) and V3 hashes |
 | ABI Validation | 6 | V2 Router ETC function names |
 | Availability Checks | 6 | V3 and Universal Router per network |
@@ -388,15 +388,18 @@ To run live tests:
 
 ## Conclusion
 
-The ETCswap connector implementation is complete with **107 tests passing**:
+The ETCswap connector implementation is complete with **134 tests passing**:
 
-**Unit Tests (73):**
+**Unit Tests (100):**
 - All contract addresses for both networks (Classic and Mordor)
 - V2 Router ABI with ETC function names (not ETH)
 - Different V2 INIT_CODE_HASH per network
 - Same V3 contracts on both networks
 - Complete file structure for Router, AMM, and CLMM trading types
 - All required configuration files
+- Contract address verification tests with correct addresses:
+  - Classic V2 Multicall: `0x900cD941a2451471BC5760c3d69493Ac57aA9698`
+  - Mordor V2 Router: `0x6d194227a9A1C11f144B35F96E6289c5602Da493`
 
 **Live Mordor Tests (16):**
 - Verified network connectivity to Mordor testnet (chain ID 63)
@@ -411,5 +414,10 @@ The ETCswap connector implementation is complete with **107 tests passing**:
 - Confirmed WETC/USC V2 pair exists with liquidity
 - Confirmed V3 pools at 0.05%, 0.3%, 1% fee tiers
 - Verified all 10 core contracts have deployed bytecode
+
+**Contract Addresses Verified Against:**
+- etcswapv2-ui main branch (Classic mainnet)
+- etcswapv2-ui mordor branch (Mordor testnet)
+- etcswapv3-ui etcswap branch (V3 contracts)
 
 The connector is ready for PR submission to upstream Hummingbot Gateway repository.
