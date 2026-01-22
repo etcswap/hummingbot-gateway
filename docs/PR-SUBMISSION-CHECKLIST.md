@@ -1,15 +1,21 @@
 # ETCswap Connector PR Submission Checklist
 
-This checklist tracks all requirements for submitting the ETCswap V2 and V3 connector implementation to the official Hummingbot Gateway repository.
+This checklist tracks the status of the ETCswap V2 and V3 connector submission to the official Hummingbot Gateway repository.
 
-## PR Information
+## PR Status: SUBMITTED
 
-- **Target Repository:** https://github.com/hummingbot/gateway
-- **Target Branch:** `development`
-- **Source Branch:** `feat/etcswap-v28-upgrade` (clean PR branch)
-- **Connector Name:** ETCswap
-- **Networks:** Ethereum Classic (`classic`, Chain ID 61), Mordor Testnet (`mordor`, Chain ID 63)
-- **Trading Types:** Router, AMM (V2), CLMM (V3)
+**PR #594:** https://github.com/hummingbot/gateway/pull/594
+
+| Field | Value |
+|-------|-------|
+| Target Repository | https://github.com/hummingbot/gateway |
+| Target Branch | `main` |
+| Source Branch | `feat/etcswap-connector` |
+| Connector Name | ETCswap |
+| Networks | Ethereum Classic (`classic`, Chain ID 61), Mordor Testnet (`mordor`, Chain ID 63) |
+| Trading Types | Router, AMM (V2), CLMM (V3) |
+| Tests Passing | 134/134 |
+| Submitted | 2026-01-22 |
 
 ---
 
@@ -136,33 +142,31 @@ This checklist tracks all requirements for submitting the ETCswap V2 and V3 conn
 
 ---
 
-## 5. PR Preparation
+## 5. PR Preparation - COMPLETED
 
 ### 5.1 Branch Setup
-- [ ] Fetch latest from upstream: `git fetch upstream`
-- [ ] Create clean branch from upstream/development
-- [ ] Cherry-pick only connector-related commits (exclude community docs)
-- [ ] Resolve any merge conflicts
+- [x] Fetch latest from upstream: `git fetch upstream`
+- [x] Create clean branch from upstream/main: `feat/etcswap-connector`
+- [x] Copy only ETCswap-specific files (no community docs)
+- [x] All 134 tests passing on clean branch
 
 ### 5.2 PR Content
-- [ ] Clear PR title: `feat: add ETCswap V2 and V3 connector for Ethereum Classic`
-- [ ] PR description includes:
+- [x] Clear PR title: `feat: add ETCswap V2 and V3 connector for Ethereum Classic`
+- [x] PR description includes:
   - Summary of changes
   - Networks supported (Classic, Mordor)
   - Trading types (Router, AMM, CLMM)
   - Test coverage percentage
   - Link to contract reference
-- [ ] Checklist in PR body per Hummingbot template
+- [x] PR submitted: https://github.com/hummingbot/gateway/pull/594
 
-### 5.3 Pre-submission Verification
+### 5.3 Pre-submission Verification - PASSED
 ```bash
-# Run all checks before submitting
-pnpm clean && pnpm install
-pnpm lint
-pnpm typecheck
-pnpm build
-pnpm test
-pnpm test:cov
+# All checks passed on feat/etcswap-connector branch
+pnpm lint      # ✓ Passed
+pnpm typecheck # ✓ Passed
+pnpm build     # ✓ Passed
+pnpm test      # ✓ 134 tests passing
 ```
 
 ---
@@ -241,26 +245,36 @@ gh pr create --base development
 
 | Category | Status | Notes |
 |----------|--------|-------|
-| Code Implementation | Complete | All routes implemented |
-| Configuration | Complete | Both networks configured |
-| Unit Tests | Partial | Core tests done, need more coverage |
-| Integration Tests | Not Started | Requires live RPC testing |
-| Code Quality | In Progress | Lint/typecheck need verification |
-| Documentation | Complete | Contract reference complete |
-| PR Branch | Not Started | Clean branch needed |
-| NCP Proposal | Pending | After PR merge |
+| Code Implementation | ✅ Complete | All routes implemented |
+| Configuration | ✅ Complete | Both networks configured |
+| Unit Tests | ✅ Complete | 100 unit tests passing |
+| Live Tests | ✅ Complete | 34 live tests (16 Mordor + 18 Classic) |
+| Code Quality | ✅ Complete | Lint/typecheck/build passing |
+| Documentation | ✅ Complete | Contract reference complete |
+| PR Branch | ✅ Complete | `feat/etcswap-connector` |
+| PR Submitted | ✅ Complete | PR #594 |
+| NCP Proposal | ⏳ Pending | After PR merge |
 
 ---
 
-## Contact & Resources
+## Next Steps
 
+1. **PR Review:** Wait for Hummingbot team to review PR #594
+2. **Address Feedback:** Respond to any review comments
+3. **NCP Proposal:** After merge, submit New Connector Proposal on Snapshot
+   - Requires 200,000 HBOT tokens
+   - 7-day voting period
+
+---
+
+## Resources
+
+- **Upstream PR:** https://github.com/hummingbot/gateway/pull/594
 - **ETCswap Website:** https://etcswap.org
-- **ETCswap V3 App:** https://v3.etcswap.org
-- **ETCswap V2 App:** https://v2.etcswap.org
 - **ETCswap SDKs:** https://github.com/etcswap/sdks
 - **Hummingbot Gateway:** https://github.com/hummingbot/gateway
-- **Hummingbot Docs:** https://hummingbot.org/gateway/
+- **NCP Snapshot Space:** https://snapshot.org/#/hbot-ncp.eth
 
 ---
 
-Last updated: 2025-01-21
+Last updated: 2026-01-22

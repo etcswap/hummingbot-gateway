@@ -277,14 +277,24 @@ node scripts/test-helius-live.js
 ## Hummingbot Gateway Endpoint Standardization
 - This repo standardized DEX and chain endpoints that are used by Hummingbot strategies. See this branch for the matching code, especially the Gateway connector classes https://github.com/hummingbot/hummingbot/tree/development
 
-## ETCswap Integration (Current Focus)
+## ETCswap Integration
 
-This fork is focused on adding ETCswap V2 and V3 connectors for Ethereum Classic.
+This fork adds ETCswap V2 and V3 connectors for Ethereum Classic.
+
+### Upstream PR Status
+**PR #594:** https://github.com/hummingbot/gateway/pull/594 (Submitted 2026-01-22)
+
+### Upstream Merge Checklist
+1. [x] Create clean feature branch from `upstream/main`
+2. [x] Copy ETCswap-specific files only (no community docs)
+3. [x] Run full test suite (134 tests passing)
+4. [x] Submit PR to upstream
+5. [ ] Address review feedback
+6. [ ] PR merged
+7. [ ] Submit NCP (New Connector Proposal) on Snapshot
 
 ### Contract Reference
-**Source of Truth:** [docs/ETCSWAP-CONTRACTS.md](docs/ETCSWAP-CONTRACTS.md) for all contract addresses.
-
-**CRITICAL:** Always verify addresses against the source of truth document. Never copy addresses from generated reports or other documentation without verification.
+**Source of Truth:** [docs/ETCSWAP-CONTRACTS.md](docs/ETCSWAP-CONTRACTS.md)
 
 ### Networks Implemented
 | Network | Config Name | Chain ID | V2 (AMM) | V3 (CLMM) |
@@ -337,16 +347,12 @@ This fork is focused on adding ETCswap V2 and V3 connectors for Ethereum Classic
    - etc.
 
 ### ETCswap SDKs
-Use the official ETCswap SDK packages (NOT `@_etcswap/*` which are deprecated):
-
 ```bash
 pnpm add @etcswapv2/sdk-core @etcswapv2/sdk @etcswapv3/sdk @etcswapv3/router-sdk
 ```
 
-SDK Repository: https://github.com/etcswap/sdks
-
 ### ETCswap Links
+- Upstream PR: https://github.com/hummingbot/gateway/pull/594
+- SDKs Repository: https://github.com/etcswap/sdks
 - V2 App: https://v2.etcswap.org
 - V3 App: https://v3.etcswap.org
-- V2 Subgraph: https://v2-graph.etcswap.org/subgraphs/name/etcswap/graphql
-- V3 Subgraph: https://v3-graph.etcswap.org/subgraphs/name/etcswap/graphql
